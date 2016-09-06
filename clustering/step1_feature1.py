@@ -57,6 +57,9 @@ def read_data_from_db():
         resultlist = cursor.fetchmany(1000)
         while len(resultlist) != 0:
             print('In resultlist ... ')
+            
+            
+            
             for (feedid,datastreamid,duration,time_at,val) in resultlist:
                 val_tlist.append(val)
                 if cur_feedid != feedid or cur_datastreamid != datastreamid \
@@ -154,12 +157,13 @@ def fix_blank_value(feed_dict):
 # 放缩，改变数据倍率
     
 def magic(x):
-    if x>1:
-        return 1 + np.log(x)
-    elif x<=1 and x>=-1:
+    magic_block = 1
+    if x>magic_block:
+        return magic_block + np.log(x)
+    elif x<=1 and x>=-magic_block:
         return x
     else:
-        return -1 - np.log(-x)
+        return -magic_block - np.log(-x)
 
 def scale_transform(feed_dict):
     labels_true = []
