@@ -8,8 +8,10 @@
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
+import pandas as pd
 import pickle
 import itertools
+import mysql.connector as c
 
 from sklearn import datasets
 from sklearn.cross_validation import StratifiedKFold
@@ -27,9 +29,9 @@ def repeatlist(it, count):
 color_str = ['r', 'g', 'b', 'c', 'm']
 color_iter = list(repeatlist(color_str, COMPONENT))
 
-xively_series = pickle.load(open("feature1.pickle", "rb"))
+xively_series = pickle.load(open("feature2.pickle", "rb"))
 X = np.array(xively_series['X'])
-X = X[:, 0:2]
+X = X[:, 0:25]
 
 def make_ellipses(gmm, ax):
     # cool but useless
@@ -45,16 +47,12 @@ def make_ellipses(gmm, ax):
         ell.set_alpha(0.5)
         ax.add_artist(ell)
 
-# GMM
-classifier = mixture.GMM(n_components=COMPONENT, covariance_type='tied', init_params='wc', n_iter=20)
-classifier.fit(X)
-h = plt.subplot(1, 2, 1)
-make_ellipses(classifier, h)
-y_pred = classifier.predict(X)
-for n, color in enumerate(color_iter):
-    data = X[y_pred == n]
-    plt.plot(data[:, 0], data[:, 1], 'x', color=color)
-    
+'''
+两种聚类方法
+=====================
+'''
+
+'''
 # DPGMM    
 classifier = mixture.DPGMM(n_components=COMPONENT, covariance_type='tied', init_params='wc', n_iter=20)
 classifier.fit(X)
@@ -66,75 +64,75 @@ for n, color in enumerate(color_iter):
     plt.plot(data[:, 0], data[:, 1], 'x', color=color)
 
 plt.show()
-
 '''
-##############################################################################
-# Load Iris Dataset
-
-iris = datasets.load_iris()
-
-# Break up the dataset into non-overlapping training (75%) and testing
-# (25%) sets.
-skf = StratifiedKFold(iris.target, n_folds=4)
-# Only take the first fold.
-train_index, test_index = next(iter(skf))
-
-X_train = iris.data[train_index]
-y_train = iris.target[train_index]
-X_test = iris.data[test_index]
-y_test = iris.target[test_index]
-
-n_classes = len(np.unique(y_train))
-
-##############################################################################
-# Try GMMs using different types of covariances.
-classifiers = dict((covar_type, GMM(n_components=n_classes,
-                    covariance_type=covar_type, init_params='wc', n_iter=20))
-                   for covar_type in ['spherical', 'diag', 'tied', 'full'])
-
-n_classifiers = len(classifiers)
-
-plt.figure(figsize=(3 * n_classifiers / 2, 6))
-plt.subplots_adjust(bottom=.01, top=0.95, hspace=.15, wspace=.05,
-                    left=.01, right=.99)
 
 
-for index, (name, classifier) in enumerate(classifiers.items()):
-    # Since we have class labels for the training data, we can
-    # initialize the GMM parameters in a supervised manner.
-    classifier.means_ = np.array([X_train[y_train == i].mean(axis=0)
-                                  for i in xrange(n_classes)])
+# GMM
+classifier = mixture.GMM(n_components=COMPONENT, covariance_type='tied', init_params='wc', n_iter=20)
+classifier.fit(X)
+h = plt.subplot(1, 2, 1)
+make_ellipses(classifier, h)
+y_pred = classifier.predict(X)
+for n, color in enumerate(color_iter):
+    data = X[y_pred == n]
+    plt.plot(data[:, 0], data[:, 1], 'x', color=color)
 
-    # Train the other parameters using the EM algorithm.
-    classifier.fit(X_train)
-
-    h = plt.subplot(2, n_classifiers / 2, index + 1)
-    make_ellipses(classifier, h)
-
-    for n, color in enumerate('rgb'):
-        data = iris.data[iris.target == n]
-        plt.scatter(data[:, 0], data[:, 1], 0.8, color=color,
-                    label=iris.target_names[n])
-    # Plot the test data with crosses
-    for n, color in enumerate('rgb'):
-        data = X_test[y_test == n]
-        plt.plot(data[:, 0], data[:, 1], 'x', color=color)
-
-    y_train_pred = classifier.predict(X_train)
-    train_accuracy = np.mean(y_train_pred.ravel() == y_train.ravel()) * 100
-    plt.text(0.05, 0.9, 'Train accuracy: %.1f' % train_accuracy,
-             transform=h.transAxes)
-
-    y_test_pred = classifier.predict(X_test)
-    test_accuracy = np.mean(y_test_pred.ravel() == y_test.ravel()) * 100
-    plt.text(0.05, 0.8, 'Test accuracy: %.1f' % test_accuracy,
-             transform=h.transAxes)
-
-    plt.xticks(())
-    plt.yticks(())
-    plt.title(name)
-
-plt.legend(loc='lower right', prop=dict(size=12))
-plt.show()
-
+   
 '''
+聚类正确性检查
+========================
+Precise, Recall
+'''
+db = c.connect(user='root', password='ictwsn', 
+                     host='127.0.0.1', database='curiosity_v3')
+df = pd.read_sql('''
+    select feedid, datastreamid, labels as true_label 
+    from datastream_labeled_t where labels is not null
+''', db)
+true_label = []
+pred_label = []
+
+for idx, L in enumerate(xively_series['labels']):
+    p = L.split(',', 1)
+    selector = ((df['feedid'] == int(p[0])) & (df['datastreamid'] == p[1]))
+    if selector.any():
+        # orzorzorzorzorzorz
+        true_label.append(df['true_label'][df[selector].index].tolist()[0])
+        pred_label.append(y_pred[idx])
+
+# 对每个生成的类进行统计，计算每个类的混杂度
+# {pred_label: {true_label: cnt}}
+pred_dict = dict()
+for pidx, pred in enumerate(pred_label):
+    if pred not in pred_dict:
+        pred_dict[pred] = dict()
+    if true_label[pidx] not in pred_dict[pred]:
+        pred_dict[pred][true_label[pidx]] = 1
+    pred_dict[pred][true_label[pidx]] += 1
+
+for _,sub_dict in pred_dict.items():
+    sumc = 0.0
+    maxc = 0.0
+    for _, v1 in sub_dict.items():
+        sumc += v1
+        maxc = max(maxc, v1)
+    print('P = ' + str(maxc/sumc))
+
+# 对每个标注的类进行统计，计算类的混杂度
+true_dict = dict()
+for pidx, true in enumerate(true_label):
+    if true not in true_dict:
+        true_dict[true] = dict()
+    if pred_label[pidx] not in true_dict[true]:
+        true_dict[true][pred_label[pidx]] = 1
+    true_dict[true][pred_label[pidx]] += 1
+
+for _,sub_dict in true_dict.items():
+    sumc = 0.0
+    maxc = 0.0
+    for _, v1 in sub_dict.items():
+        sumc += v1
+        maxc = max(maxc, v1)
+    print('R = ' + str(maxc/sumc))
+
+
