@@ -44,7 +44,7 @@ def read_data_from_db():
         cursor = conn.cursor()
         cursor.execute('''
             select feedid,datastreamid,duration,time_at,val
-            from datapoint_t order by feedid,datastreamid,duration 
+            from datapoint_daily_t order by feedid,datastreamid,duration 
         ''')
         print('Data Load Done!')
         cur_feedid = ''

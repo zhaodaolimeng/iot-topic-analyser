@@ -54,7 +54,8 @@ def make_ellipses(gmm, ax):
 
 '''
 # DPGMM    
-classifier = mixture.DPGMM(n_components=COMPONENT, covariance_type='tied', init_params='wc', n_iter=20)
+classifier = mixture.DPGMM(n_components=COMPONENT, covariance_type='tied', 
+                           init_params='wc', n_iter=20)
 classifier.fit(X)
 h1 = plt.subplot(1, 2, 2)
 make_ellipses(classifier, h)
@@ -68,7 +69,8 @@ plt.show()
 
 
 # GMM
-classifier = mixture.GMM(n_components=COMPONENT, covariance_type='tied', init_params='wc', n_iter=20)
+classifier = mixture.GMM(n_components=COMPONENT, covariance_type='tied', 
+                         init_params='wc', n_iter=20)
 classifier.fit(X)
 h = plt.subplot(1, 2, 1)
 make_ellipses(classifier, h)
