@@ -67,8 +67,10 @@ def build_feature(plist):
                 v_head.append(vlist[i])
                 
     # 在list的最前和最后加入一个点
-    tlist = [0] + t_tail + t_head + [1440]
-    vlist = [v_tail[0]] + v_tail + v_head + [v_head[-1]]
+    tlist = t_tail + t_head;
+    vlist = v_tail + v_head;
+    tlist = [0] + tlist + [1440]
+    vlist = [vlist[0]] + vlist + [vlist[-1]]
     
     '''
     # 如果时间间隔过大，或开始时间和结束时间有问题
@@ -81,7 +83,10 @@ def build_feature(plist):
     samples.append(magic(vlist[0]))
     while cur_time < 1440:
         cur_time += 10
-        samples.append(magic(f(cur_time)))
+        v = f(cur_time)
+        if v.size == 1:
+            v = v.item()
+        samples.append(magic(v))
     
     return samples
 
@@ -119,11 +124,11 @@ def get_feeddict():
                 
                 print('Build features for feedid = ' + str(feedid) + \
                     ' datastreamid = ' + str(datastreamid))
-                rawlist, binlist = build_feature(plist)
-                print('Feature done! size = ' + str(len(binlist)))
+                rawlist = build_feature(plist)
+                print('Feature done! size = ' + str(len(rawlist)))
                 
                 plist = []
-                if len(binlist) != 0:
+                if len(rawlist) != 0:
                     ds_raw_dict[old_datastreamid] = rawlist
                 
                 if feedid != old_feedid:
@@ -148,3 +153,10 @@ feed_raw_dict = dict((k, v) for k, v in feed_raw_dict.items() if v)
 print('Start to dump data!')
 pickle.dump(feed_raw_dict, open( "raw.pickle", "wb" ))
 print('Raw Data Done!')
+
+print('Start to dump for python version 27')
+raw_str = pickle.dumps(feed_raw_dict, 2)
+with open("raw_p27.pickle", "wb") as text_file:
+    text_file.write(raw_str)
+print('Raw Data Done!')
+

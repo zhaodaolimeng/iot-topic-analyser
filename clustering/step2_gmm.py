@@ -29,7 +29,7 @@ def repeatlist(it, count):
 color_str = ['r', 'g', 'b', 'c', 'm']
 color_iter = list(repeatlist(color_str, COMPONENT))
 
-xively_series = pickle.load(open("feature2.pickle", "rb"))
+xively_series = pickle.load(open("step1_feature2.pickle", "rb"))
 X = np.array(xively_series['X'])
 X = X[:, 0:25]
 

@@ -58,8 +58,6 @@ def read_data_from_db():
         while len(resultlist) != 0:
             print('In resultlist ... ')
             
-            
-            
             for (feedid,datastreamid,duration,time_at,val) in resultlist:
                 val_tlist.append(val)
                 if cur_feedid != feedid or cur_datastreamid != datastreamid \
@@ -196,6 +194,6 @@ xively_series['X'] = features
 xively_series['labels'] = labels_true
 
 print('Start to dump data!')
-pickle.dump(xively_series, open( "feature1.pickle", "wb" ))
+pickle.dump(xively_series, open( "step1_feature1.pickle", "wb" ))
 print('Raw Data Done!')
 

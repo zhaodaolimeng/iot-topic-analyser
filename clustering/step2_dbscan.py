@@ -15,7 +15,7 @@ from sklearn.preprocessing import StandardScaler
 import pickle
 
 
-xively_series = pickle.load(open("feature1.pickle", "rb"))
+xively_series = pickle.load(open("step1_feature1.pickle", "rb"))
 
 X = np.array(xively_series['X'])
 labels_true = xively_series['labels'] # 这里的label并没有用上

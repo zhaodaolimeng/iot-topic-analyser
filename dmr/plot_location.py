@@ -12,11 +12,15 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
 from matplotlib.colors import LinearSegmentedColormap
 
+'''
+绘制之前需要将对应的dmr.state.gz中的内容解压到output目录
+'''
+
 DMR_STATE = 'output/dmr.state'
 DMR_PARAMETER = 'output/dmr.parameters'
 DMR_FEATURES = 'output/features.txt'
 
-TOPIC_K = 8
+TOPIC_K = 30
 
 # 读出每个词对应的主题内容
 # {doc: {word : topic}}

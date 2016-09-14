@@ -94,7 +94,10 @@ def build_feature(plist):
     samples.append(magic(vlist[0]))
     while cur_time < 1440:
         cur_time += 10
-        samples.append(magic(f(cur_time)))
+        v = f(cur_time)
+        if v.size == 1:
+            v = v.item()
+        samples.append(magic(v))
     
     # 以10分钟为间隔，24个数据点求均值，作为趋势的bin，数据需要进行规范化
     sum = 0
@@ -134,7 +137,7 @@ def get_feeddict():
         
     print('Starting to fetch!')
     cursor.execute('''
-        select feedid, datastreamid, time_at, val from datapoint_t
+        select feedid, datastreamid, time_at, val from datapoint_daily_t
     ''')
     
     resultlist = cursor.fetchmany(FETCH_SCALE)
@@ -194,5 +197,5 @@ feed_dict = dict((k, v) for k, v in feed_dict.items() if v)
 # 使用pickle进行存储
 xively_series = save_result(feed_dict)
 print('Start to dump data!')
-pickle.dump(xively_series, open( "feature2.pickle", "wb" ))
+pickle.dump(xively_series, open( "step1_feature2.pickle", "wb" ))
 print('Raw Data Done!')

@@ -14,7 +14,7 @@ x轴为时间线，y轴为指定主题在文档中出现的概率
 import numpy as np
 import matplotlib.pyplot as plt
 
-TOPIC_K = 15
+TOPIC_K = 30
 
 # 读出每个词对应的主题内容
 # {doc: {word : topic}}
@@ -72,7 +72,17 @@ fig = plt.figure()
 ax = fig.add_subplot(111)
 
 color_list = ['#F0F8FF', '#FAEBD7', '#00FFFF', '#7FFFD4', 
-              '#F0FFFF', '#F5F5DC', '#FFE4C4', '#0000FF',]
+              '#F0FFFF', '#F5F5DC', '#FFE4C4', '#0000FF',
+              '#F0F8FF', '#FAEBD7', '#00FFFF', '#7FFFD4', 
+              '#F0FFFF', '#F5F5DC', '#FFE4C4', '#0000FF',
+              '#F0F8FF', '#FAEBD7', '#00FFFF', '#7FFFD4', 
+              '#F0FFFF', '#F5F5DC', '#FFE4C4', '#0000FF',
+              '#F0F8FF', '#FAEBD7', '#00FFFF', '#7FFFD4', 
+              '#F0FFFF', '#F5F5DC', '#FFE4C4', '#0000FF',
+              '#F0F8FF', '#FAEBD7', '#00FFFF', '#7FFFD4', 
+              '#F0FFFF', '#F5F5DC', '#FFE4C4', '#0000FF',
+              '#F0F8FF', '#FAEBD7', '#00FFFF', '#7FFFD4', 
+              '#F0FFFF', '#F5F5DC', '#FFE4C4', '#0000FF']
 
 ax.fill_between(time_list, 0, topic_list[0], facecolor=color_list[0], alpha=.7)
 for idx in range(TOPIC_K - 1):
