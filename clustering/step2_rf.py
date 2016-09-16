@@ -67,6 +67,9 @@ X_list = list(chunks(X, int(len(X)/FOLD_NUM)))
 y_list = list(chunks(y, int(len(y)/FOLD_NUM)))
 
 fold_sum = 0
+
+total_cm = np.empty(shape=(0,0))
+
 for i in range(FOLD_NUM):
     x_test = X_list[i]
     y_test = y_list[i]
@@ -90,21 +93,26 @@ for i in range(FOLD_NUM):
     fold_sum += 100*cnt/len(preds)
     print('fold = ' + str(i) + ', Accuracy = ' + str(100*cnt/len(preds) ))
     
-    
-    # 绘制混淆矩阵
+    # 计算整体的混淆矩阵
     cm = confusion_matrix(y_test, preds, label_names)
-    fig = plt.figure()
-    ax = fig.add_subplot(111)
-    cax = ax.matshow(cm)
-    fig.colorbar(cax)
-    ax.set_xticklabels([''] + label_names, rotation=90)
-    ax.set_yticklabels([''] + label_names)
-    ax.xaxis.set_major_locator(MultipleLocator(1))
-    ax.yaxis.set_major_locator(MultipleLocator(1))
-    plt.tight_layout()
-    plt.xlabel('Predicted')
-    plt.ylabel('True')
-    plt.show()
+    cm = np.asarray(cm)
+    if total_cm.shape == (0,0):
+        total_cm = np.zeros(shape = cm.shape)
+    total_cm += cm
+    
+    
+fig = plt.figure()
+ax = fig.add_subplot(111)
+cax = ax.matshow(total_cm.tolist())
+fig.colorbar(cax)
+ax.set_xticklabels([''] + label_names, rotation=90)
+ax.set_yticklabels([''] + label_names)
+ax.xaxis.set_major_locator(MultipleLocator(1))
+ax.yaxis.set_major_locator(MultipleLocator(1))
+plt.tight_layout()
+plt.xlabel('Predicted')
+plt.ylabel('True')
+plt.show()
 
 print('=====================')
 print('Overall accuracy = ' + str(fold_sum/FOLD_NUM))

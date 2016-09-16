@@ -88,7 +88,7 @@ def build_feature(plist):
     '''
     # 使用插值方法进行数据清洗，之后进行采样
     f = interp1d(tlist, vlist)
-    features = [0.0] * 26
+    features = [0.0] * 32
     samples = [] # 从0时刻开始，每隔10分钟一个样点
     cur_time = 0
     samples.append(magic(vlist[0]))
@@ -110,11 +110,19 @@ def build_feature(plist):
     if sum != 0:
         for i in range(6):
             features[i] /= sum
+            
+    # 以10分钟为间隔的方差数据
+    for i in range(6):
+        bin_d = 0.0
+        bin_ave = features[i]
+        for j in range(24):
+            bin_d += (bin_ave - samples[i*24 + j])**2
+        features[i + 5] = bin_d/24
     
     # 将值域分为20个bin，数值统计不同值域下的分布
     for sample in samples:
         try:
-            features[5 + 10 + int(sample/3)] += 1
+            features[5 + 6 + 10 + int(sample/3)] += 1
         except (ValueError, TypeError, IndexError):
             # 当超过值域时，不进行处理
             return []
