@@ -32,12 +32,8 @@ def magic(x):
 输入一天的时间点，输出特征，如果val域中本身是非数字型的，则返回空序列
 特征向量形如：
 [0-5] 时间趋势向量，每4个小时形成一个bin，每隔bin为数值均值
-[6-25] 值域趋势向量，统计一天的数值分布 
-
-可能的问题
-=============
-1. 数据是截断的
-2. 数据的时间是UTC时间，这样提取的当地的每天的时间趋势是无效的
+[6-11] 每个bin中的方差
+[11-31] 值域趋势向量，统计一天的数值分布 
 '''
 def build_feature(plist):
     tlist = [] # 以分钟为单位
@@ -88,7 +84,8 @@ def build_feature(plist):
     '''
     # 使用插值方法进行数据清洗，之后进行采样
     f = interp1d(tlist, vlist)
-    features = [0.0] * 32
+    features = []
+    
     samples = [] # 从0时刻开始，每隔10分钟一个样点
     cur_time = 0
     samples.append(magic(vlist[0]))
@@ -98,34 +95,54 @@ def build_feature(plist):
         if v.size == 1:
             v = v.item()
         samples.append(magic(v))
+        
+    average = 0.0
+    d = 0.0
+    for s in samples:
+        average += s
+    average /= len(samples)
+    for s in samples:
+        d += (s - average)**2
     
-    # 以10分钟为间隔，24个数据点求均值，作为趋势的bin，数据需要进行规范化
-    sum = 0
+    # 最大值、最小值、方差
+    features.append(max(samples))
+    features.append(min(samples))
+    features.append(average)
+    features.append(d/len(samples))
+    
+    # 以10分钟为间隔，4个小时24个数据点
+    # 求均值、方差、最大值、最小值，作为趋势的bin，数据需要进行规范化
+    f_trend = []
     for i in range(6):
-        bin_sum = 0
-        for j in range(24):
-            bin_sum += samples[i*24 + j]
-        features[i] = bin_sum/24
-        sum += features[i]
-    if sum != 0:
-        for i in range(6):
-            features[i] /= sum
-            
-    # 以10分钟为间隔的方差数据
-    for i in range(6):
+        bin_avg = 0
         bin_d = 0.0
-        bin_ave = features[i]
+        bin_max = samples[i*24]
+        bin_min = samples[i*24]
+
         for j in range(24):
-            bin_d += (bin_ave - samples[i*24 + j])**2
-        features[i + 5] = bin_d/24
+            bin_avg += samples[i*24 + j]
+            bin_max = max(bin_max, samples[i*24 + j])
+            bin_min = min(bin_min, samples[i*24 + j])
+        bin_avg /= 24
+        
+        for j in range(24):
+            bin_d += (bin_avg - samples[i*24 + j])**2
+        f_trend.append(bin_avg)
+        f_trend.append(bin_d)
+        f_trend.append(bin_max)
+        f_trend.append(bin_min)
+        
+    features += f_trend
     
-    # 将值域分为20个bin，数值统计不同值域下的分布
-    for sample in samples:
-        try:
-            features[5 + 6 + 10 + int(sample/3)] += 1
-        except (ValueError, TypeError, IndexError):
-            # 当超过值域时，不进行处理
-            return []
+#    # 将值域分为20个bin，数值统计不同值域下的分布
+#    val_domain = [0.0]*20
+#    for sample in samples:
+#        try:
+#            val_domain[10 + int(sample/3)] += 1
+#        except (ValueError, TypeError, IndexError):
+#            # 当超过值域时，不进行处理
+#            return []
+#    features += val_domain
     
     return features
 
