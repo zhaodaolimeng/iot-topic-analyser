@@ -5,3 +5,10 @@ __pycache__/
 *.pickle
 visual/output/
 output/
+dmr/output/dmr.state.gz
+dmr/output/dmr.state
+dmr/output/dmr.parameters
+dmr/output/features.txt
+dmr/output/texts.txt
+dmr/output/process.txt
+dmr/output/instance.mallet

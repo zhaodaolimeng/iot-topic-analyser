@@ -110,6 +110,29 @@ def build_feature(plist):
     features.append(average)
     features.append(d/len(samples))
     
+    # 使用3个bin
+    f_trend = []
+    for i in range(3):
+        bin_avg = 0
+        bin_d = 0.0
+        bin_max = samples[i*48]
+        bin_min = samples[i*48]
+
+        for j in range(48):
+            bin_avg += samples[i*48 + j]
+            bin_max = max(bin_max, samples[i*48 + j])
+            bin_min = min(bin_min, samples[i*48 + j])
+        bin_avg /= 48
+        
+        for j in range(48):
+            bin_d += (bin_avg - samples[i*48 + j])**2
+        f_trend.append(bin_avg)
+        f_trend.append(bin_d)
+        f_trend.append(bin_max)
+        f_trend.append(bin_min)
+        
+    features += f_trend    
+    
     # 以10分钟为间隔，4个小时24个数据点
     # 求均值、方差、最大值、最小值，作为趋势的bin，数据需要进行规范化
     f_trend = []
