@@ -12,3 +12,4 @@ dmr/output/features.txt
 dmr/output/texts.txt
 dmr/output/process.txt
 dmr/output/instance.mallet
+tfidf/__pycache__/

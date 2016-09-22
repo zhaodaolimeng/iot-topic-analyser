@@ -120,31 +120,18 @@ if __name__ == "__main__":
                 
                 lat = int((90+feed['lat']) / 5)
                 lng = int((180+feed['lng']) / 5)
+#                lb_loc = '_' + str(lat) + '_' + str(lng)
                 epoch = int(time.mktime(time.strptime('2007.01.01', '%Y.%m.%d')))
                 create_time = int(feed['created'].timestamp() - epoch)
                 lb_time = str(int(create_time / (3600*24*30*6)))
-                
+
+#                ff.write('lbloc' + lb_loc + ' lbtime=' + lb_time+'\n')                
                 ff.write('lat=' + str(lat) 
                     + ' lng=' + str(lng) 
                     + ' lbtime=' + lb_time+'\n')
                     
                 ft.write(feed['desc']+'\n')
                 
-#            for feed in selected_docs:
-#                if not feed['desc']:
-#                    continue
-#                
-#                lat = int((90+feed['lat']) / 5)
-#                lng = int((180+feed['lng']) / 5)
-#                lb_loc = '_' + str(lat) + '_' + str(lng)
-#                
-#                epoch = int(time.mktime(time.strptime('2007.01.01', '%Y.%m.%d')))
-#                create_time = int(feed['created'].timestamp() - epoch)
-#                lb_time = str(int(create_time / (3600*24*30*6)))
-#                
-#                ff.write('lbloc' + lb_loc + ' lbtime=' + lb_time+'\n')
-#                ft.write(feed['desc']+'\n')
-    
     print('Transform lat lng to location label')
 
 

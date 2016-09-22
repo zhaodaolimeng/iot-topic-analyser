@@ -6,4 +6,5 @@ see more bfs test testing please
 just using near love first 
 data information feed http https www twitter com 
 minutes seconds device time 
-updated mins units de corrected dose reason stopped
+updated mins units de corrected dose reason stopped 
+lat latitude lon longitude
