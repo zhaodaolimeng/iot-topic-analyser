@@ -25,6 +25,8 @@ BAD_RECORD = 'badrecords.txt'
 STOP_WORDS = 'stopwords.txt'
 FEATURES = 'output/features.txt'
 TEXT = 'output/texts.txt'
+FEEDID = 'output/feedid.txt'
+
 MIN_TERM_LEN = 3
 
 def clean_and_concat(str_list):
@@ -62,6 +64,13 @@ def load_data():
 
         if lat is None or lng is None:
             continue
+        try:
+            doc.encode('ascii')
+        except UnicodeEncodeError:
+            print("it was not a ascii-encoded unicode string")
+#        else:
+#            print("It may have been an ascii-encoded unicode string")
+            
         feed = dict()
         
         # 直接在这里进行拼接
@@ -113,24 +122,25 @@ if __name__ == "__main__":
     # 生成DMR的地点\时间特征向量
     with codecs.open(FEATURES, 'w', 'utf-8') as ff:
         with codecs.open(TEXT, 'w', 'utf-8') as ft:
+            with codecs.open(FEEDID, 'w', 'utf-8') as fd:
             
-            for feed in selected_docs:
-                if not feed['desc']:
-                    continue
-                
-                lat = int((90+feed['lat']) / 5)
-                lng = int((180+feed['lng']) / 5)
-#                lb_loc = '_' + str(lat) + '_' + str(lng)
-                epoch = int(time.mktime(time.strptime('2007.01.01', '%Y.%m.%d')))
-                create_time = int(feed['created'].timestamp() - epoch)
-                lb_time = str(int(create_time / (3600*24*30*6)))
-
-#                ff.write('lbloc' + lb_loc + ' lbtime=' + lb_time+'\n')                
-                ff.write('lat=' + str(lat) 
-                    + ' lng=' + str(lng) 
-                    + ' lbtime=' + lb_time+'\n')
+                for feed in selected_docs:
+                    if not feed['desc']:
+                        continue
                     
-                ft.write(feed['desc']+'\n')
+                    lat = int((90+feed['lat']) / 10)
+                    lng = int((180+feed['lng']) / 10)
+    #                lb_loc = '_' + str(lat) + '_' + str(lng)
+                    epoch = int(time.mktime(time.strptime('2007.01.01', '%Y.%m.%d')))
+                    create_time = int(feed['created'].timestamp() - epoch)
+                    lb_time = str(int(create_time / (3600*24*30*6)))
+    
+    #                ff.write('lbloc' + lb_loc + ' lbtime=' + lb_time+'\n')                
+                    ff.write('lat=' + str(lat) 
+                        + ' lng=' + str(lng) 
+                        + ' lbtime=' + lb_time+'\n')
+                    ft.write(feed['desc']+'\n')
+                    fd.write(str(feed['feedid'])+'\n')
                 
     print('Transform lat lng to location label')
 
