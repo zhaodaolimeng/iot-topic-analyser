@@ -11,6 +11,7 @@ import time
 import requests
 import langid
 import json
+import pickle
 
 BAD_RECORD = 'badrecords.txt'
 STOP_WORDS = 'stopwords.txt'
@@ -52,8 +53,7 @@ def translate_docs():
     cursor.execute("""
         select
             feedid, doc, ds_list, tags_list, 
-            description, tags, device_name, title, 
-            created, lat, lng
+            description, tags, device_name, title, created, lat, lng
         from feed_translate_t;
     """, conn)
 
@@ -68,14 +68,15 @@ def translate_docs():
     for (feedid, doc, ds_list, tags_list,
          description, tags, device_name, title, 
          created, lat, lng) in result:
-             
-        if feedid <= 66139:
-            continue
-        
+
+#        if feedid <= 66139:
+#            continue
+
         if lat is None or lng is None:
             continue
 
         # 直接在这里进行拼接
+        # 测试时需要将tags的内容进行剥离
         doclist = [description, tags, device_name, title, ds_list, tags_list]
         print('Translating feedid = ' + str(feedid))
         print('==========================')
@@ -143,6 +144,6 @@ def concat_and_translate(str_list):
     return ret
 
 feed_result = translate_docs()
-#print('Start to dump data!')
-#pickle.dump(feed_result, open("step1_feature1.pickle", "wb"))
-#print('Raw Data Done!')
+print('Start to dump data!')
+pickle.dump(feed_result, open("step1_translate.pickle", "wb"))
+print('Raw Data Done!')
