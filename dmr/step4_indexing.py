@@ -33,13 +33,13 @@ import sys
 sys.path.insert(0, '../tfidf/')
 import BM25 as bm25
 
-#DMR_STATE_FILE = 'output/dmr.state'
-#DMR_TOPICS_FILE = 'output/dmr-topics.txt'
-#DOCUMENT_FILE = 'output/texts.txt' # 两种方法统一的输入文件
+DMR_STATE_FILE = 'output/dmr.state'
+DMR_TOPICS_FILE = 'output/dmr-topics.txt'
+DOCUMENT_FILE = 'output/texts.txt' # 两种方法统一的输入文件
 
-DMR_STATE_FILE = 'output_notags/dmr.state'
-DMR_TOPICS_FILE = 'output_notags/dmr-topics.txt'
-DOCUMENT_FILE = 'output_notags/texts.txt'
+#DMR_STATE_FILE = 'output_notags/dmr.state'
+#DMR_TOPICS_FILE = 'output_notags/dmr-topics.txt'
+#DOCUMENT_FILE = 'output_notags/texts.txt'
 
 INDEX_FILE = 'step4_indexing.pickle' # 输出模型
 
