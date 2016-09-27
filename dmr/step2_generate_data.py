@@ -20,6 +20,7 @@ import mysql.connector as c
 import collections
 import codecs
 import time
+import pickle
 
 BAD_RECORD = 'badrecords.txt'
 STOP_WORDS = 'stopwords.txt'
@@ -99,7 +100,6 @@ def concat_and_clean(feed_result):
         for w in wordlist:
             regular_word[w] += 1
         feed['doc'] = ' '.join(wordlist)
-    
     print('Total Word Count = ', len([w for w in regular_word if regular_word[w]>3]))
     
     # 剔除过短的词
@@ -109,9 +109,39 @@ def concat_and_clean(feed_result):
         feed['desc'] = ' '.join(wordlist)
         if len(wordlist)>1:
             ret.append(feed)
-    
     return ret
 
+def save_item_with_tags():
+    conn = c.connect(user='root', password='ictwsn', 
+               host='127.0.0.1', database='curiosity_v3')
+    cursor = conn.cursor()
+    cursor.execute("select id, tags from feed_t where length(tags) > 0", conn)
+    feed_list = []
+    with codecs.open(FEEDID, 'r') as f:
+        feed_list = f.read().splitlines()
+    text_list = []
+    with codecs.open(TEXT, 'rb') as f:
+        text_list = f.read().splitlines()   
+
+    # 从db中的feed_t读取全部(feedid, tags)
+    feed_set = set(feed_list)
+    tags_map = dict()
+    for (idx, tags) in cursor.fetchall():
+        if str(idx) not in feed_set:
+            continue
+        tags = tags.replace('\n', ' ')
+        tags = re.sub(r"http\S+", "", tags)
+        tags = re.sub(r"\d+", "", tags)
+        tags = re.sub(r'[`\-=~!@#$%^&*()_+\[\]{};\'\\:"|<,./<>?]', ' ', tags)
+        tlist = [w for w in tags.lower().split() if len(w)>1]
+        tset = set([x for x in tlist if x is not ' '])
+        tags_map[idx] = tset
+        
+    all_dict = dict()
+    all_dict['tags_map'] = tags_map
+    all_dict['text_list'] = text_list
+    all_dict['feed_list'] = feed_list
+    pickle.dump(all_dict, open('step2_generate_data.pickle', 'wb'))
 
 if __name__ == "__main__":    
     docs = load_data()
@@ -140,6 +170,7 @@ if __name__ == "__main__":
         fd.write(str(feed['feedid'])+'\n')
     
     print('Transform lat lng to location label')
+    save_item_with_tags()
 
 
 

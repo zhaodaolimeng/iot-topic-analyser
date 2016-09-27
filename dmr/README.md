@@ -20,3 +20,5 @@ dmr.parameters为DMR最终的参数权重lambda，可以用于计算主题的先
 
 # 注意事项  
 topic-number.bat中已经定义了对不同主题数目的测试  
+mallet run cc.mallet.topics.tui.DMRLoader texts.txt features.txt instance.mallet
+mallet run cc.mallet.topics.DMRTopicModel instance.mallet 30

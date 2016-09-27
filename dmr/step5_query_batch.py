@@ -12,7 +12,8 @@ Created on Fri Sep 23 12:05:20 2016
 '''
 import pickle
 import numpy as np
-SOURCE_FILE = 'step2_generate_data_notags.pickle'
+#SOURCE_FILE = 'step2_generate_data_notags.pickle'
+SOURCE_FILE = 'step2_generate_data.pickle'
 INDEX_FILE = 'step4_indexing.pickle'
 
 '''
@@ -57,15 +58,15 @@ def compute_score(all_dict):
         count += 1
         if count % 100 == 0:
             print(count)
-    
     print('Done!')
     print('=================================')
     pickle.dump(dscore_list, open('step5_dscore_list.pickle','wb'))
     pickle.dump(bscore_list, open('step5_bscore_list.pickle','wb'))
+    pickle.dump(feedid_list, open('step5_feedid_list.pickle','wb'))
     print('Data saved!')
     return dscore_list, bscore_list, feedid_list
 
-dscore_list, bscore_list, feedid_list = compute_score(all_dict)
+# dscore_list, bscore_list, feedid_list = compute_score(all_dict)
 
 '''
 步骤四，计算每个条目中不同的方法对应的排名情况
@@ -97,7 +98,7 @@ def compute_rank(dscore_list, bscore_list, feedid_list):
     print('The average rank of DMR is ' + str(np.mean(drank_list)))
     print('=================================')
 
-# compute_rank(dscore_list, bscore_list, feedid_list)
+#compute_rank(dscore_list, bscore_list, feedid_list)
 
 def compute_mrank(all_dict, bscore_list, dscore_list, feedid_list, beta=0.01):
     mrank_list = []
@@ -124,7 +125,7 @@ def compute_mrank(all_dict, bscore_list, dscore_list, feedid_list, beta=0.01):
     return mrank_list
 
 
-betas = [0, 0.01, 0.1, 0.2, 0.5, 0.8, 1.0]
+betas = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 for i in range(len(betas)):
     compute_mrank(all_dict, bscore_list, dscore_list, feedid_list, beta=betas[i])
 

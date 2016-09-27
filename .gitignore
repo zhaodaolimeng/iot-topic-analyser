@@ -4,7 +4,7 @@ __pycache__/
 *.pyc
 *.pickle
 visual/output/
-output/
 dmr/output/
 dmr/output_notags/
 tfidf/__pycache__/
+dmr/output_slice/
