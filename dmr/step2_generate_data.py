@@ -143,12 +143,12 @@ def save_item_with_tags():
     all_dict['feed_list'] = feed_list
     pickle.dump(all_dict, open('step2_generate_data.pickle', 'wb'))
 
+
 if __name__ == "__main__":    
     docs = load_data()
     selected_docs = concat_and_clean(docs)
     
     # 生成DMR的地点\时间特征向量
-    
     ff = codecs.open(FEATURES, 'w', 'utf-8')
     ft = codecs.open(TEXT, 'w', 'utf-8')
     fd = codecs.open(FEEDID, 'w', 'utf-8')

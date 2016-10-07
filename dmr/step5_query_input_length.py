@@ -129,5 +129,5 @@ def run_comparsion(pieces = 10):
 if __name__ == "__main__":
     
     rank_list = run_comparsion()
-    pickle.dump(rank_list, open('step6.pickle', 'wb'))
+    pickle.dump(rank_list, open('step5_query_input_length.pickle', 'wb'))
     

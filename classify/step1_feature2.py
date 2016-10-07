@@ -201,15 +201,13 @@ def get_feeddict():
             if old_feedid != '' and \
                 (old_datastreamid != datastreamid or feedid != old_feedid) :
                 
-                print('Build features for feedid = ' + str(feedid) + \
-                    ' datastreamid = ' + str(datastreamid))
+#                print('Build features for feedid = ' + str(feedid) + \
+#                    ' datastreamid = ' + str(datastreamid))
                 binlist = build_feature(plist)
-                print('Feature done! size = ' + str(len(binlist)))
-                
+#                print('Feature done! size = ' + str(len(binlist)))
                 plist = []
                 if len(binlist) != 0:
                     ds_dict[old_datastreamid] = binlist
-                
                 if feedid != old_feedid:
                     feed_dict[old_feedid] = ds_dict
                     ds_dict = dict()
@@ -221,6 +219,9 @@ def get_feeddict():
         print('Starting to fetch!')
         resultlist = cursor.fetchmany(FETCH_SCALE)
         print('Fetch done!')
+
+    # 剔除无元素的条目
+    feed_dict = dict((k, v) for k, v in feed_dict.items() if v)        
     return feed_dict
 
 def save_result(feed_dict):
@@ -235,15 +236,14 @@ def save_result(feed_dict):
     xively_series['X'] = features
     xively_series['labels'] = labels_true
     return xively_series
+
+if __name__== "__main__":
+
+    # 计算特征向量
+    feed_dict = get_feeddict()
     
-# 计算特征向量
-feed_dict = get_feeddict()
-
-# 剔除无元素的条目
-feed_dict = dict((k, v) for k, v in feed_dict.items() if v)
-
-# 使用pickle进行存储
-xively_series = save_result(feed_dict)
-print('Start to dump data!')
-pickle.dump(xively_series, open( "step1_feature2.pickle", "wb" ))
-print('Raw Data Done!')
+    # 使用pickle进行存储
+    xively_series = save_result(feed_dict)
+    print('Start to dump data!')
+    pickle.dump(xively_series, open( "step1_feature2.pickle", "wb" ))
+    print('Raw Data Done!')
