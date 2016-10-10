@@ -31,9 +31,10 @@ import step1_feature2 as feature_extraction
 import step2_rf as classification
 import mysql.connector as db
 
-SRC_DIR = 'output/'
-FEATURE_FILE = 'step1_feature2.pickle'
+
+FEATURE_FILE = '../classify/step1_feature2.pickle'
 TAGS_MAP_FILE = 'step2_generate_data.pickle'
+SRC_DIR = 'output/'
 SRC_ID = 'feedid.txt'
 SRC_TEXT = 'texts.txt'
 SRC_FEATURE = 'features.txt'
@@ -105,10 +106,13 @@ def save_as_files(feed_label_dict):
     
     adhoc_feature_dict = dict()
     cursor = conn.cursor()
-    cursor.execute("select feedid, created, lat, lng from feed_t", conn)
+    cursor.execute("""
+        select id, created, lat, lng from feed_t 
+        where length(lat)>0 and length(lng)>0 and length(created)>0
+    """, conn)
     for (feedid, created, lat, lng) in cursor.fetchall():
-        lat = int((90+lat) / 10)
-        lng = int((180+lng) / 10)
+        lat = int((90+float(lat)) / 10)
+        lng = int((180+float(lng)) / 10)
         epoch = int(time.mktime(time.strptime('2007.01.01', '%Y.%m.%d')))
         create_time = int(created.timestamp() - epoch)
         lb_time = str(int(create_time / (3600*24*30*6)))
@@ -117,12 +121,13 @@ def save_as_files(feed_label_dict):
     
     for (feedid, text) in feed_label_dict.items():
         count += 1
-        corpus_list.append({'i': feedid, 't': text, 'f': adhoc_feature_dict[feedid]})
+        if feedid in adhoc_feature_dict:
+            corpus_list.append({'i': feedid, 't': text, 'f': adhoc_feature_dict[feedid]})
         if count >= int(len(id_list) * ratio):
             break
+
     for i in range(len(id_list)):
-        newtext = text_list[i] + feed_label_dict[id_list[i]]
-        corpus_list.append({'i': id_list[i], 't': newtext, 'f':dmr_feature_list[i]})
+        corpus_list.append({'i': id_list[i], 't': text_list[i], 'f':dmr_feature_list[i]})
     
     # 将生成的文本写入到临时文件夹output_complete
     with codecs.open(TMP_DIR + ID, 'w', 'utf-8') as fi:
@@ -137,9 +142,9 @@ def save_as_files(feed_label_dict):
 #FIXME 检查tags_map读取是否正确
 def calculate_accuracy(tags_map):
     
-    with codecs.open(SRC_ID, 'r') as f:
+    with codecs.open(SRC_DIR + SRC_ID, 'r') as f:
         src_feedid = f.read().splitlines()
-    with codecs.open(SRC_TEXT, 'r') as f:
+    with codecs.open(SRC_DIR + SRC_TEXT, 'r') as f:
         src_text = f.read().splitlines()
     
     # 调用mallet

@@ -8,3 +8,7 @@ dmr/output/
 dmr/output_notags/
 tfidf/__pycache__/
 dmr/output_slice/
+*.parameters
+*.state
+*.gz
+dmr/output_complete/
