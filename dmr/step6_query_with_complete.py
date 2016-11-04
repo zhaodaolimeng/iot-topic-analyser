@@ -57,7 +57,7 @@ conn = db.connect(user='root', password='ictwsn',
 在执行该步骤前，需要执行classify/step1_feature2.py生成特征
 从datastream_labeled_t中读取特征
 '''
-def build_corpus(ratio):
+def build_corpus():
     
     print('Read features...')
     if not os.path.isfile(FEATURE_FILE):
@@ -90,7 +90,7 @@ def build_corpus(ratio):
     return feed_label_dict
 
     
-def save_as_files(feed_label_dict):
+def save_as_files(feed_label_dict, ratio):
     # 读入原始的texts.txt文件，该文件使用description+tags拼接
     with codecs.open(SRC_DIR + SRC_ID, 'r') as f:
         id_list = f.read().splitlines()
@@ -195,8 +195,8 @@ if __name__ == "__main__":
     tags_map = all_dict['tags_map']
     
     for ratio in ratios:
-        feed_label_dict = build_corpus(ratio)
-        save_as_files(feed_label_dict)
+        feed_label_dict = build_corpus()
+        save_as_files(feed_label_dict, ratio)
         accuracy_list.append(calculate_accuracy(tags_map))
         
     pickle.dump(accuracy_list, open('step5_complete.pickle', 'wb'))

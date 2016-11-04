@@ -12,3 +12,4 @@ dmr/output_slice/
 *.state
 *.gz
 dmr/output_complete/
+.spyproject/

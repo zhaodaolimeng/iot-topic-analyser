@@ -66,7 +66,7 @@ else:
     pickle.dump(all_dict, open( "step4_indexing.pickle", "wb" ))
     print('Dump done ...')
 
-query_str = 'solar power'
+query_str = 'counter'
 print('=======================')
 b_scores = bm25_querier.BM25Score(query_str.split())
 show_top10(b_scores)
@@ -74,6 +74,9 @@ print('=======================')
 d_scores = dmr_querier.DMRScore(query_str.split(), alpha=0.0001)
 show_top10(d_scores)
 print('=======================')
-mix_score = np.array(d_scores) * np.array(b_scores)
+# mix_score = np.array(d_scores) * np.array(b_scores)
+beta = 0.4
+mix_score = np.log(d_scores - np.min(d_scores))* beta +  np.log(b_scores - np.min(b_scores)) * (1-beta)
+
 show_top10(mix_score.tolist())
 

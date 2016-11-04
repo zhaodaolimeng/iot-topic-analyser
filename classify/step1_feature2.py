@@ -19,12 +19,13 @@ conn = c.connect(user='root', password='ictwsn',
 值域变换
 '''
 def magic(x):
-    if x>1:
-        return 1 + np.log(x)
-    elif x<=1 and x>=-1:
+    threshold = 200
+    if x > threshold:
+        return threshold + np.log(x - threshold + 1)
+    elif x <= threshold and x >= -threshold:
         return x
     else:
-        return -1 - np.log(-x)
+        return -threshold - np.log(-x + threshold - 1)
 
 '''
 特征提取
