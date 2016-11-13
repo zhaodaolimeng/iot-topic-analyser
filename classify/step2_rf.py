@@ -102,9 +102,29 @@ def cross_validation(X, y, label_names, FOLD_NUM = 10):
             total_cm = np.zeros(shape = cm.shape)
         total_cm += cm
     
+    # 仅显示前20个项目
+    cm_size = 15
+    item_count = np.sum(total_cm, axis=0)
+    top_idx = np.argpartition(item_count, -cm_size)[-cm_size:]
+    shrink_cm = np.empty(shape=(cm_size, cm_size))    
+    shrink_name = []
+    
+    for idx in top_idx:        
+        shrink_name.append(label_names[idx])
+    
+    for i, x_idx in enumerate(top_idx):        
+        for j, y_idx in enumerate(top_idx):            
+            shrink_cm[i][j] = total_cm[x_idx][y_idx];
+
+    overall_accuracy = fold_sum/FOLD_NUM
+    print('=====================')
+    print('Overall accuracy = ' + str(overall_accuracy))
+    return total_cm, overall_accuracy, shrink_name, shrink_cm
+    
+def plot_confusion_matrix(cm, label_names):    
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    cax = ax.matshow(total_cm.tolist())
+    cax = ax.matshow(cm.tolist())
     fig.colorbar(cax)
     ax.set_xticklabels([''] + label_names, rotation=90)
     ax.set_yticklabels([''] + label_names)
@@ -112,15 +132,16 @@ def cross_validation(X, y, label_names, FOLD_NUM = 10):
     ax.yaxis.set_major_locator(MultipleLocator(1))
     plt.tight_layout()
     plt.xlabel('Predicted')
-    plt.ylabel('True')
+    plt.ylabel('Ground Truth Label')
     plt.show()
-    
-    print('=====================')
-    print('Overall accuracy = ' + str(fold_sum/FOLD_NUM))
+    pass
 
 if __name__ == "__main__":
 
     xively_series = pickle.load(open("step1_feature2.pickle", "rb"))
     X,y,label_names,_, _ = load_data(xively_series['X'], xively_series['labels'])
     single_classify_test(X, y, label_names)
-    cross_validation(X, y, label_names)
+    total_cm, overall_accracy, shrink_name, shrink_cm = cross_validation(X, y, label_names)
+    
+    plot_confusion_matrix(shrink_cm, shrink_name)
+    plot_confusion_matrix(total_cm, label_names)
