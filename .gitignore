@@ -13,3 +13,4 @@ dmr/output_slice/
 *.gz
 dmr/output_complete/
 .spyproject/
+dmr-v2/output/

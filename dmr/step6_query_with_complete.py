@@ -24,7 +24,7 @@ import gzip
 import numpy as np
 import subprocess as sp
 
-sys.path.insert(0, '../tfidf/')
+sys.path.insert(0, '../tfidf/') # import BM25
 sys.path.insert(0, '../classify/')
 import BM25 as bm25
 import step1_feature2 as feature_extraction
