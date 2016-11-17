@@ -12,15 +12,17 @@ import re
 import time
 import codecs
 import subprocess as sp
+from subprocess import PIPE, CalledProcessError, Popen
+
 
 STOP_WORDS = 'stopwords.txt'
-FILE_FEATURES = 'output/features.txt'
-FILE_TEXT = 'output/texts.txt'
-FILE_FEEDID = 'output/id.txt'
-FILE_SENSORID = 'output/sensor.txt'
-MALLET_INSTANCE = 'output/mallet.instance'
+FILE_FEATURES = 'features.txt'
+FILE_TEXT = 'texts.txt'
+FILE_FEEDID = 'id.txt'
+FILE_SENSORID = 'sensor.txt'
+MALLET_INSTANCE = 'mallet.instance'
 
-TMP_DIR = 'output/'
+DIR = 'output/'
 
 conn = c.connect(user='root', password='ictwsn', 
                      host='127.0.0.1', database='curiosity_v3')
@@ -79,10 +81,10 @@ def build_input():
     
     print('Use feed_map to construct document per sensor...')
     
-    ft = codecs.open(FILE_TEXT, 'w', 'utf-8')
-    ff = codecs.open(FILE_FEATURES, 'w', 'utf-8')
-    fidf = codecs.open(FILE_FEEDID, 'w', 'utf-8')
-    fids = codecs.open(FILE_SENSORID, 'w', 'utf-8')
+    ft = codecs.open(DIR + FILE_TEXT, 'w', 'utf-8')
+    ff = codecs.open(DIR + FILE_FEATURES, 'w', 'utf-8')
+    fidf = codecs.open(DIR + FILE_FEEDID, 'w', 'utf-8')
+    fids = codecs.open(DIR + FILE_SENSORID, 'w', 'utf-8')
     
     cursor.execute('select feedid, streamid, tags from datastream_t')
     
@@ -126,17 +128,56 @@ def build_input():
     
 def call_dmr():
     
-    #TODO 生成mallet.instance
-    print('Calling mallet to create instance.mallet...')
-    sp.call(['mallet', 'run', 'cc.mallet.topics.tui.DMRLoader', 
-             FILE_TEXT, FILE_FEATURES, MALLET_INSTANCE], 
-             shell=True, cwd=TMP_DIR)
+    # 生成mallet.instance
+    print('Create instance.mallet...')
+    cmd = ['mallet', 'run', 'cc.mallet.topics.tui.DMRLoader', 
+             FILE_TEXT, FILE_FEATURES, MALLET_INSTANCE]
+             
+    p = sp.Popen(cmd, stdout=sp.PIPE, shell=True, cwd=DIR)
+    out, err = p.communicate()
+    print(out)
     
-    #TODO 生成
-    print('Calling mallet to create topic index...')
-    sp.call(['mallet', 'run', 'cc.mallet.topics.DMRTopicModel',
-             MALLET_INSTANCE, '30'], 
-             shell=True, cwd=TMP_DIR)
+    # 生成dmr.parameters和dmr.state.gz
+    print('Create topic index...')
+    p = sp.Popen(['mallet', 'run', 'cc.mallet.topics.DMRTopicModel',
+             MALLET_INSTANCE, '30'], shell=True, stdout=sp.PIPE, cwd=DIR)
+    out, err = p.communicate()
+    print(out)
+    
+    #TODO 从out的最后几行读出主题号对应的：alpha值、主题数目信息
+    
+    
+    pass
+
+    
+def tail( f, lines=20 ):
+    total_lines_wanted = lines
+
+    BLOCK_SIZE = 1024
+    f.seek(0, 2)
+    block_end_byte = f.tell()
+    lines_to_go = total_lines_wanted
+    block_number = -1
+    blocks = [] # blocks of size BLOCK_SIZE, in reverse order starting
+                # from the end of the file
+    while lines_to_go > 0 and block_end_byte > 0:
+        if (block_end_byte - BLOCK_SIZE > 0):
+            # read the last block we haven't yet read
+            f.seek(block_number*BLOCK_SIZE, 2)
+            blocks.append(f.read(BLOCK_SIZE))
+        else:
+            # file too small, start from begining
+            f.seek(0,0)
+            # only read what was not read
+            blocks.append(f.read(block_end_byte))
+        lines_found = blocks[-1].count('\n')
+        lines_to_go -= lines_found
+        block_end_byte -= BLOCK_SIZE
+        block_number -= 1
+    all_read_text = ''.join(reversed(blocks))
+    return '\n'.join(all_read_text.splitlines()[-total_lines_wanted:])
+
+    
 
 build_input()
 call_dmr()
