@@ -66,12 +66,12 @@ else:
     pickle.dump(all_dict, open( "step4_indexing.pickle", "wb" ))
     print('Dump done ...')
 
-query_str = 'counter'
+query_str = 'counter temperature'
 print('=======================')
 b_scores = bm25_querier.BM25Score(query_str.split())
 show_top10(b_scores)
 print('=======================')
-d_scores = dmr_querier.DMRScore(query_str.split(), alpha=0.0001)
+d_scores = dmr_querier.dmr_score(query_str.split(), alpha=0.0001)
 show_top10(d_scores)
 print('=======================')
 # mix_score = np.array(d_scores) * np.array(b_scores)

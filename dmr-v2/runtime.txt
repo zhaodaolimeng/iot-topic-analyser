@@ -1,0 +1,416 @@
+==============
+Modified by Li
+==============
+1s <0>
+632ms 714ms 811ms 790ms 570ms 525ms 486ms 459ms 455ms 428ms <10>
+438ms 500ms 377ms 350ms 363ms 448ms 370ms 396ms 395ms 377ms <20>
+369ms 356ms 303ms 305ms 287ms 334ms 297ms 309ms 285ms 311ms <30>
+276ms 297ms 272ms 332ms 281ms 291ms 295ms 333ms 274ms 296ms <40>
+277ms 318ms 272ms 301ms 289ms 363ms 305ms 286ms 301ms 311ms <50>
+275ms 283ms 252ms 322ms 304ms 288ms 280ms 312ms 319ms 282ms <60>
+265ms 300ms 317ms 281ms 291ms 325ms 305ms 280ms 273ms 277ms <70>
+308ms 296ms 293ms 319ms 300ms 295ms 268ms 294ms 325ms 310ms <80>
+289ms 309ms 311ms 288ms 289ms 308ms 320ms 293ms 292ms 266ms <90>
+309ms 286ms 278ms 297ms 314ms 290ms 268ms 273ms 325ms
+0	1	21111	counter geiger monitoring pachube xbee kit feeds cosm wireless
+1	1	25354	air quality index products preliminary observational webscraped web pm
+2	1	19832	power raspberry electricity pi current watts usage home monitoring
+3	1	17802	house system outdoor voltage harbor cell plant pa community
+4	1	15532	air radiation readings day gamma battery live daily android
+5	1	57392	aqe sensor origin type computed address version firmware index
+6	1	19765	pressure level measured located wind temperature meters speed air
+7	1	52838	radiation verified unverified level pachube id marian rate steinbach
+8	1	22291	logger created iphone altitude alt elevation coffee mood weight
+9	1	17126	temp voltage sensors script serial power module phase temps
+10	1	17988	solar energy lab pv south site measurements live center
+11	1	20320	house located room island year roque living small times
+12	1	17530	sensor type building particulate floor pbd label facing east
+13	1	15856	australia water grid electricity public stream published intervals ac
+14	1	21228	temperature temp sensors room dsb inside wire temperatures light
+15	1	17372	light home environment monitor indoor cpu energy system heartbeat
+16	1	16051	temperature gprs based school installed primary software sht uk
+17	1	18402	weather station wind intel powered school null speed rain
+18	1	25777	water parameter power status system solar tank temp hot
+19	1	57763	radiation unverified verified steinbach germany id marian sievert level
+20	1	22533	arduino ethernet shield dht sensors bmp uno light pressure
+21	1	17099	sensor temperature arduino project measuring school cpm psychogeography contentment
+22	1	16635	sensor cc home provided number pachube valley free air
+23	1	15879	office university city project dc york smart based ditecnet
+24	1	23705	stats followers friends ratio tweets favourites lists design technology
+25	1	20088	humidity temperature sensors internal relative air python inside snow
+26	1	49249	power arduino computer homeeasy pi raspberry weather station mobile
+27	1	14430	ca level qld datastreams environment movement real online mouse
+28	1	17026	san francisco trees code environmental benefits zip unofficial japan
+29	1	56215	aqe sensor raw origin type version firmware address index
+6s <100>
+394ms 379ms 386ms 408ms 391ms 382ms 376ms 399ms 385ms 383ms <110>
+404ms 372ms 378ms 397ms 421ms 388ms 429ms 378ms 389ms 465ms <120>
+393ms 397ms 418ms 411ms 381ms 423ms 553ms 431ms 335ms 344ms <130>
+330ms 366ms 330ms 343ms 370ms 332ms 328ms 343ms 360ms 326ms <140>
+361ms 350ms 342ms 332ms 346ms 375ms 349ms 348ms 367ms 340ms <150>
+343ms 354ms 334ms 352ms 370ms 352ms 325ms 341ms 363ms 337ms <160>
+359ms 342ms 326ms 335ms 353ms 351ms 330ms 328ms 381ms 335ms <170>
+347ms 383ms 352ms 334ms 361ms 396ms 327ms 398ms 496ms 397ms <180>
+371ms 385ms 356ms 362ms 372ms 361ms 335ms 375ms 351ms 329ms <190>
+351ms 392ms 349ms 361ms 399ms 352ms 361ms 369ms 357ms
+0	0.0872	21691	counter geiger pachube kit xbee monitoring chips sensor radiation
+1	0.07131	20762	air quality products preliminary observational index webscraped pm pollutant
+2	0.10257	23183	power electricity current energy home raspberry temperature pi watts
+3	0.07439	14960	house harbor sensors art store plant building pa scientific
+4	0.06764	12335	readings radiation gamma battery day sensor live spain android
+5	0.10641	65722	aqe sensor type origin address index version firmware computed
+6	0.09309	16135	pressure wind measured meters level speed located feet water
+7	0.0381	52705	radiation unverified verified marian steinbach id rate level pushed
+8	0.04731	23209	logger created iphone altitude alt elevation mood coffee psychogeography
+9	0.08392	16556	temp temperature sensor sensors script power voltage temps sed
+10	0.0958	17823	solar energy lab pv site live south measurements center
+11	0.06538	15636	house island roque located year room times staff family
+12	0.1218	13889	sensor floor building light pbd label facing carbon east
+13	0.07308	12585	australia grid public stream electricity water published intervals instant
+14	0.09679	27690	temperature sensor temp arduino room sensors dsb house light
+15	0.09817	17027	cpu pi raspberry system monitor sensor energy environment load
+16	0.09415	15850	temperature gprs school weather station primary level based installed
+17	0.09153	18401	weather station wind intel powered speed australia school pressure
+18	0.08298	26335	water parameter power solar status system temperature temp tank
+19	0.03339	58482	radiation verified unverified pachube germany meters rate id station
+20	0.09419	27554	arduino ethernet shield sensor sensors dht pressure uno temp
+21	0.10847	15197	temperature sensor arduino school project measuring humidity home xbee
+22	0.10602	14499	cc sensor number temperature home provided pachube aq monitoring
+23	0.10004	15202	university office project city ditecnet quito york smart description
+24	0.04548	26699	stats followers friends tweets ratio lists favourites design uk
+25	0.14625	24205	humidity temperature internal sensors air light sensor relative null
+26	0.0768	45113	power computer arduino homeeasy station weather pi raspberry back
+27	0.08156	12194	status ca mouse movement level datastreams real main online
+28	0.04986	15956	san francisco trees benefits code environmental zip risk unofficial
+29	0.09073	62594	aqe sensor raw origin type address index firmware version
+5s <200>
+371ms 368ms 330ms 376ms 352ms 354ms 352ms 363ms 353ms 345ms <210>
+373ms 348ms 356ms 376ms 351ms 363ms 398ms 358ms 358ms 356ms <220>
+361ms 344ms 357ms 394ms 346ms 360ms 384ms 346ms 351ms 375ms <230>
+354ms 357ms 396ms 359ms 364ms 388ms 375ms 366ms 359ms 377ms <240>
+356ms 414ms 421ms 375ms 375ms 377ms 349ms 341ms 396ms 375ms <250>
+355ms 391ms 369ms 349ms 378ms 341ms 337ms 359ms 374ms 355ms <260>
+360ms 392ms 348ms 356ms 387ms 407ms 383ms 393ms 372ms 363ms <270>
+406ms 381ms 351ms 394ms 384ms 439ms 421ms 344ms 314ms 309ms <280>
+335ms 313ms 319ms 347ms 364ms 314ms 310ms 331ms 310ms 323ms <290>
+326ms 319ms 325ms 322ms 332ms 341ms 325ms 352ms 320ms
+0	0.02274	21100	counter geiger pachube kit radiation sensor xbee chips monitoring
+1	0.01122	19462	products preliminary observational air quality index webscraped pollutant web
+2	0.03369	24541	power electricity current energy temperature home consumption watts pi
+3	0.01445	14421	house harbor art store sensors building system loggers temperature
+4	0.01097	11635	readings radiation gamma sensor battery spain day live csn
+5	0.03749	62959	aqe sensor type origin index address version firmware computed
+6	0.02014	14760	meters wind measured pressure level feet speed located sea
+7	0.00537	51747	radiation verified unverified marian steinbach pachube id rate germany
+8	0.01511	23623	logger iphone created altitude elevation alt mood coffee temperature
+9	0.01955	16015	temp sensor sensors temperature script power voltage sed curl
+10	0.02466	18439	solar lab energy pv site power south live center
+11	0.00995	14490	house island roque located year staff room times family
+12	0.02777	13713	pbd sensor air floor label building quality id carbon
+13	0.0141	11759	public stream grid electricity australia published intervals instant cluster
+14	0.03489	32325	temperature sensor arduino temp sensors room light house dsb
+15	0.02239	17398	pi raspberry cpu sensor system load monitor energy environment
+16	0.02365	15565	gprs temperature school weather station primary level installed fuel
+17	0.02663	18309	weather station wind intel powered speed australia school temperature
+18	0.02189	26088	water parameter power solar status temperature system tank temp
+19	0.00365	58896	radiation unverified verified id sievert meters level station pachube
+20	0.03092	27748	arduino ethernet sensor shield temperature sensors dht pressure humidity
+21	0.02836	14183	temperature sensor arduino school project measuring home humidity xbee
+22	0.02475	13612	cc sensor number pachube temperature provided home aq channel
+23	0.02477	15340	university project stats office ditecnet quito city york description
+24	0.0077	27092	stats followers friends tweets ratio lists favourites design technology
+25	0.05904	24441	humidity temperature internal sensors sensor light air level relative
+26	0.01314	43486	power computer arduino homeeasy weather station raspberry back mobile
+27	0.01894	11888	status mouse ca movement level datastreams online beat substation
+28	0.00966	15917	san francisco trees benefits code environmental zip risk unofficial
+29	0.03111	69237	aqe sensor raw origin type address index firmware version
+5s <300>
+331ms 331ms 323ms 330ms 318ms 313ms 316ms 327ms 317ms 316ms <310>
+321ms 325ms 322ms 325ms 328ms 343ms 334ms 330ms 322ms 333ms <320>
+328ms 338ms 330ms 320ms 329ms 329ms 382ms 312ms 345ms 450ms <330>
+320ms 314ms 316ms 314ms 320ms 317ms 316ms 423ms 322ms 330ms <340>
+329ms 473ms 316ms 317ms 317ms 394ms 469ms 441ms 391ms 323ms <350>
+367ms 356ms 361ms 343ms 352ms 320ms 320ms 322ms 326ms 320ms <360>
+320ms 331ms 321ms 322ms 328ms 328ms 320ms 320ms 337ms 316ms <370>
+325ms 315ms 325ms 320ms 341ms 333ms 318ms 334ms 319ms 332ms <380>
+320ms 327ms 325ms 320ms 319ms 323ms 454ms 349ms 355ms 349ms <390>
+331ms 317ms 319ms 344ms 359ms 388ms 350ms 368ms 365ms
+0	0.01096	20927	counter geiger pachube sensor radiation kit chips xbee cpm
+1	0.0021	19310	products preliminary observational air quality index webscraped pollutant displayed
+2	0.019	25043	power electricity current temperature energy home consumption watts cost
+3	0.00588	14334	house harbor temperature sensors art store building loggers scientific
+4	0.00448	11150	readings radiation gamma battery csn android live sensor follow
+5	0.02009	64559	aqe sensor type origin address version index firmware computed
+6	0.00734	14169	meters wind measured pressure feet speed level located sea
+7	0.00183	52154	radiation verified unverified marian steinbach id manually pachube represents
+8	0.00802	23802	logger created iphone altitude elevation alt mood coffee temperature
+9	0.00827	16056	sensor temperature temp sensors script power sed curl voltage
+10	0.01109	18532	solar lab energy pv arduino site south power center
+11	0.00329	14209	house island roque located year staff room times family
+12	0.01221	13431	pbd air sensor label floor building quality carbon id
+13	0.00586	11402	grid stream public australia electricity published cluster instant intervals
+14	0.01961	33869	temperature sensor arduino temp sensors light room dsb humidity
+15	0.01054	17788	raspberry pi cpu sensor system load energy monitor point
+16	0.01067	15837	gprs temperature school weather station primary level fuel humidity
+17	0.01302	18111	weather station wind intel powered speed australia temperature humidity
+18	0.00941	26053	water parameter power solar status temperature system tank temp
+19	0.00117	58419	radiation unverified verified id level station meters rate pachube
+20	0.01546	28540	arduino ethernet sensor shield temperature sensors dht humidity pressure
+21	0.01138	13768	temperature sensor arduino school project measuring humidity home xbee
+22	0.01102	13409	cc sensor number pachube provided temperature home aq voltage
+23	0.01144	15287	stats university project ditecnet quito city office york description
+24	0.00366	26981	stats followers friends tweets ratio favourites lists design technology
+25	0.03307	22661	temperature humidity internal sensor sensors light air level temp
+26	0.00411	42947	power computer arduino homeeasy weather station mobile back raspberry
+27	0.00881	11839	status mouse level ca movement datastreams substation beat real
+28	0.00408	16125	san francisco trees benefits code environmental zip risk unofficial
+29	0.0172	69477	aqe sensor raw type origin index address firmware version
+2s <400>
+325ms 316ms 318ms 333ms 319ms 325ms 336ms 325ms 327ms 320ms <410>
+339ms 324ms 319ms 327ms 322ms 319ms 320ms 340ms 336ms 331ms <420>
+327ms 324ms 322ms 321ms 333ms 322ms 323ms 324ms 343ms 319ms <430>
+333ms 332ms 321ms 319ms 325ms 328ms 325ms 322ms 339ms 322ms <440>
+324ms 333ms 325ms 320ms 323ms 340ms 356ms 318ms 345ms 341ms <450>
+321ms 320ms 336ms 318ms 319ms 329ms 324ms 323ms 321ms 338ms <460>
+322ms 321ms 330ms 325ms 319ms 322ms 338ms 322ms 320ms 324ms <470>
+339ms 324ms 317ms 332ms 319ms 321ms 325ms 325ms 327ms 334ms <480>
+350ms 323ms 324ms 326ms 327ms 319ms 323ms 330ms 323ms 323ms <490>
+323ms 327ms 323ms 321ms 332ms 320ms 322ms 325ms 326ms
+0	0.00717	21033	counter geiger pachube radiation sensor kit chips xbee cpm
+1	0.00154	19352	products preliminary observational air quality index webscraped pollutant displayed
+2	0.01318	25125	power electricity temperature current energy home consumption watts cost
+3	0.00393	14400	house temperature harbor sensors store art building loggers college
+4	0.00277	11152	readings radiation gamma battery csn live android follow day
+5	0.01451	64764	aqe sensor type origin address index version computed firmware
+6	0.00436	13892	meters wind measured feet pressure speed level located sea
+7	0.00131	52287	radiation verified unverified steinbach marian id germany station pachube
+8	0.00577	23889	logger created iphone altitude elevation alt temperature mood coffee
+9	0.00548	16034	sensor temp temperature sensors power script sed voltage curl
+10	0.00713	18603	solar energy lab pv power site south arduino center
+11	0.00167	14133	island house roque located year staff room times family
+12	0.00801	13264	pbd air label sensor floor building quality id carbon
+13	0.00373	11376	grid public stream australia electricity published intervals cluster instant
+14	0.01368	34345	temperature sensor arduino temp sensors light room humidity dsb
+15	0.00751	17927	raspberry pi sensor cpu system load energy monitor environment
+16	0.00716	15847	gprs temperature school weather station primary level humidity fuel
+17	0.00882	18109	weather station wind intel powered temperature speed australia humidity
+18	0.00607	25768	water parameter power solar status temperature system temp tank
+19	0.00085	58254	radiation unverified verified id rate represents strahlenschutz meters manually
+20	0.01005	28677	arduino sensor ethernet shield temperature sensors dht humidity pressure
+21	0.00674	13527	temperature sensor arduino school project measuring humidity xbee home
+22	0.00728	13330	cc sensor number temperature pachube provided home aq voltage
+23	0.00788	15445	stats university project ditecnet quito city office temperature description
+24	0.0026	26894	stats friends followers tweets ratio favourites lists design technology
+25	0.02013	22579	temperature humidity internal sensor sensors light air level null
+26	0.00194	42685	power computer arduino homeeasy station weather mobile back rubbish
+27	0.00605	11831	status mouse ca level movement temperature datastreams beat substation
+28	0.00303	16127	san francisco trees benefits code environmental zip risk unofficial
+29	0.0108	69540	aqe sensor raw type origin address index firmware version
+3s <500>
+332ms 341ms 335ms 324ms 321ms 321ms 336ms 321ms 320ms 328ms <510>
+326ms 323ms 321ms 344ms 322ms 322ms 329ms 334ms 323ms 329ms <520>
+338ms 324ms 327ms 406ms 387ms 332ms 332ms 348ms 326ms 331ms <530>
+373ms 338ms 330ms 324ms 329ms 322ms 321ms 336ms 323ms 322ms <540>
+330ms 340ms 321ms 323ms 329ms 322ms 324ms 325ms 342ms 325ms <550>
+327ms 355ms 329ms 321ms 334ms 431ms 323ms 326ms 344ms 331ms <560>
+334ms 351ms 326ms 319ms 327ms 331ms 318ms 322ms 330ms 319ms <570>
+321ms 320ms 330ms 319ms 324ms 350ms 324ms 328ms 341ms 357ms <580>
+319ms 331ms 344ms 330ms 328ms 323ms 342ms 317ms 320ms 339ms <590>
+325ms 339ms 339ms 333ms 318ms 319ms 334ms 320ms 318ms
+0	0.00579	20655	geiger pachube counter radiation sensor kit chips xbee cpm
+1	0.00134	19325	preliminary observational products air quality index webscraped pollutant change
+2	0.01084	24980	power electricity current temperature energy home consumption watts cost
+3	0.0032	14284	house harbor temperature store art sensors building loggers college
+4	0.00221	11254	readings radiation gamma battery csn android follow live air
+5	0.01111	64680	aqe sensor type origin address index version computed firmware
+6	0.00337	13776	meters wind measured feet pressure speed level located sea
+7	0.00106	52299	radiation unverified verified marian steinbach id manually station level
+8	0.00487	23973	logger created iphone altitude elevation alt temperature mood coffee
+9	0.00427	16321	sensor temperature temp sensors power script sed voltage curl
+10	0.00561	18702	solar energy lab pv power site south arduino center
+11	0.00123	14139	house island roque located year staff room times family
+12	0.0063	13298	pbd air sensor label floor building quality temperature carbon
+13	0.003	11313	grid public stream australia electricity intervals cluster instant published
+14	0.01121	34576	temperature sensor arduino temp sensors light room humidity dsb
+15	0.0059	17787	raspberry pi cpu sensor system energy load temperature monitor
+16	0.00569	15759	gprs temperature school weather station primary level humidity fuel
+17	0.00707	17932	weather station wind intel powered temperature speed australia humidity
+18	0.00468	26010	water parameter power temperature status solar system temp sensor
+19	0.0007	58263	radiation verified unverified id pachube german germany meters sievert
+20	0.00791	28878	arduino sensor ethernet shield temperature sensors humidity dht pressure
+21	0.00493	13456	temperature arduino sensor school project measuring humidity shield home
+22	0.00573	13372	cc sensor number provided pachube temperature home aq channel
+23	0.00624	15308	stats university project ditecnet quito city office temperature home
+24	0.00221	27079	stats followers friends tweets ratio favourites lists design uk
+25	0.01436	22184	temperature humidity internal sensor light sensors air temp level
+26	0.00135	42518	power computer arduino homeeasy station weather mobile rubbish back
+27	0.00484	11852	status mouse level movement ca temperature datastreams beat substation
+28	0.00251	16110	san francisco trees benefits code environmental zip risk unofficial
+29	0.00885	70106	aqe sensor raw type origin index address firmware version
+3s <600>
+331ms 322ms 324ms 322ms 334ms 325ms 322ms 327ms 324ms 323ms <610>
+320ms 345ms 340ms 327ms 331ms 321ms 321ms 322ms 334ms 324ms <620>
+321ms 342ms 321ms 333ms 325ms 349ms 320ms 321ms 365ms 360ms <630>
+323ms 321ms 320ms 327ms 322ms 321ms 325ms 321ms 328ms 323ms <640>
+322ms 322ms 363ms 374ms 359ms 325ms 321ms 320ms 321ms 320ms <650>
+320ms 321ms 327ms 324ms 323ms 325ms 326ms 323ms 362ms 320ms <660>
+325ms 329ms 321ms 324ms 320ms 324ms 417ms 332ms 357ms 415ms <670>
+331ms 333ms 340ms 335ms 326ms 320ms 324ms 323ms 321ms 322ms <680>
+320ms 327ms 328ms 323ms 322ms 326ms 323ms 321ms 326ms 324ms <690>
+325ms 346ms 325ms 326ms 323ms 321ms 324ms 323ms 324ms
+0	0.00476	20802	geiger pachube counter sensor radiation kit chips xbee cpm
+1	0.00116	19333	preliminary observational products air quality index webscraped pollutant change
+2	0.00987	25046	power electricity current temperature energy home consumption watts cost
+3	0.00282	14217	house harbor temperature sensors store art building loggers system
+4	0.00192	11369	readings radiation gamma battery csn follow android live day
+5	0.00995	63935	aqe sensor type origin index address computed version firmware
+6	0.00293	13459	meters wind measured feet speed pressure level located sea
+7	0.00093	52408	radiation unverified verified marian steinbach id meters germany pachube
+8	0.00454	24029	logger iphone created altitude elevation alt temperature mood coffee
+9	0.00386	16231	temperature sensor temp sensors script power sed voltage curl
+10	0.00496	18492	solar energy lab pv power site south center live
+11	0.00106	14119	island house roque located year staff room times family
+12	0.00557	13346	pbd air label floor sensor building quality id temperature
+13	0.00267	11234	grid public stream australia electricity instant cluster intervals published
+14	0.01005	34415	temperature sensor arduino temp sensors light room humidity dsb
+15	0.00525	17888	raspberry pi sensor cpu system energy load temperature monitor
+16	0.00509	15882	gprs temperature school weather station primary level humidity fuel
+17	0.00634	17904	weather station wind intel powered temperature australia speed humidity
+18	0.00401	25966	water parameter power temperature solar status system temp sensor
+19	0.00062	58121	radiation verified unverified id station ground micro reported strahlenschutz
+20	0.00709	29300	arduino sensor ethernet shield temperature sensors humidity dht pressure
+21	0.0044	13270	temperature arduino sensor school project measuring humidity home shield
+22	0.00509	13224	cc sensor number temperature provided pachube home aq channel
+23	0.00559	15267	stats university project ditecnet quito city office temperature home
+24	0.00196	27025	stats followers friends ratio tweets lists favourites design uk
+25	0.01245	22497	temperature humidity internal sensor light sensors air level null
+26	0.00103	42480	power computer arduino homeeasy station weather mobile rubbish back
+27	0.00436	11959	status mouse ca level movement datastreams temperature substation beat
+28	0.00221	16017	san francisco trees benefits code environmental zip risk unofficial
+29	0.008	70954	aqe sensor raw type origin address index version firmware
+4s <700>
+322ms 329ms 321ms 328ms 326ms 325ms 327ms 330ms 327ms 322ms <710>
+325ms 324ms 323ms 323ms 325ms 326ms 328ms 322ms 323ms 343ms <720>
+344ms 326ms 327ms 327ms 324ms 323ms 327ms 326ms 325ms 331ms <730>
+334ms 331ms 325ms 325ms 331ms 327ms 324ms 328ms 327ms 323ms <740>
+323ms 328ms 323ms 322ms 325ms 321ms 323ms 321ms 322ms 339ms <750>
+345ms 340ms 325ms 325ms 323ms 323ms 322ms 324ms 320ms 324ms <760>
+325ms 326ms 361ms 326ms 324ms 322ms 325ms 331ms 338ms 323ms <770>
+324ms 331ms 324ms 322ms 323ms 325ms 326ms 329ms 327ms 323ms <780>
+334ms 346ms 331ms 321ms 323ms 322ms 323ms 325ms 321ms 324ms <790>
+321ms 322ms 321ms 324ms 321ms 320ms 321ms 325ms 321ms
+0	0.00376	20800	geiger pachube counter sensor radiation kit xbee chips cpm
+1	0.00081	19327	preliminary observational products air quality index webscraped pollutant change
+2	0.00915	24940	power electricity current temperature energy home consumption watts cost
+3	0.00249	14257	house temperature harbor sensors store art building loggers system
+4	0.00158	11328	readings radiation gamma battery csn follow android live air
+5	0.00788	65576	aqe sensor origin type index address firmware version computed
+6	0.00257	13241	meters wind measured feet speed pressure level located sea
+7	0.00067	52564	radiation verified unverified marian steinbach id manually pachube meters
+8	0.00349	23959	logger created iphone altitude elevation alt temperature mood coffee
+9	0.00359	16317	temperature sensor temp sensors power script sed voltage module
+10	0.00441	18743	solar energy lab pv power site south arduino center
+11	0.00077	14082	house island roque located year staff times room family
+12	0.00486	13234	pbd air label sensor floor quality building temperature id
+13	0.00237	11142	grid public stream australia electricity intervals cluster instant published
+14	0.00913	34749	temperature sensor arduino temp sensors light room humidity dsb
+15	0.00453	17615	raspberry pi cpu sensor system energy load monitor temperature
+16	0.00453	15866	gprs temperature school weather station primary level humidity fuel
+17	0.00578	17791	weather station wind intel powered temperature australia speed humidity
+18	0.00383	25815	water parameter power temperature solar status system temp sensor
+19	0.00041	57979	radiation unverified verified id germany pachube ground station represents
+20	0.00618	29450	arduino sensor ethernet shield temperature sensors dht humidity pressure
+21	0.00401	12878	temperature arduino sensor school project measuring home xbee shield
+22	0.00459	13353	cc sensor number temperature provided pachube home voltage aq
+23	0.00538	15358	stats university project ditecnet quito city office temperature home
+24	0.00149	26982	stats followers friends ratio tweets favourites lists design uk
+25	0.01091	22567	temperature humidity internal sensor sensors light air null level
+26	0.00052	42471	power computer arduino homeeasy station weather mobile rubbish back
+27	0.00414	11992	status mouse level movement ca temperature datastreams beat substation
+28	0.00181	16096	san francisco trees benefits code environmental zip risk unofficial
+29	0.0067	69717	aqe sensor type origin raw address index version firmware
+4s <800>
+325ms 325ms 327ms 325ms 322ms 322ms 323ms 325ms 323ms 333ms <810>
+328ms 327ms 325ms 324ms 325ms 324ms 325ms 323ms 325ms 324ms <820>
+325ms 325ms 327ms 321ms 324ms 324ms 322ms 325ms 323ms 340ms <830>
+342ms 322ms 326ms 353ms 334ms 326ms 371ms 366ms 363ms 361ms <840>
+332ms 331ms 349ms 330ms 333ms 328ms 366ms 335ms 332ms 338ms <850>
+371ms 349ms 328ms 330ms 327ms 328ms 324ms 363ms 337ms 337ms <860>
+331ms 323ms 327ms 328ms 332ms 330ms 326ms 367ms 369ms 344ms <870>
+353ms 339ms 322ms 320ms 333ms 324ms 323ms 322ms 338ms 330ms <880>
+324ms 346ms 324ms 323ms 326ms 331ms 326ms 327ms 361ms 343ms <890>
+329ms 331ms 335ms 323ms 325ms 339ms 321ms 327ms 338ms
+0	0.00333	20804	geiger pachube counter radiation sensor kit chips xbee cpm
+1	0.00075	19272	preliminary observational products air quality index webscraped pollutant web
+2	0.00819	25021	power electricity temperature current energy home watts consumption cost
+3	0.00222	14292	house temperature harbor sensors store art loggers building system
+4	0.00142	11295	readings radiation gamma battery csn follow live android day
+5	0.00627	67217	aqe sensor type origin index address firmware version computed
+6	0.00222	13206	meters wind measured feet pressure speed level located sea
+7	0.00062	52586	radiation unverified verified steinbach marian id manually gamma pachube
+8	0.00291	23967	logger created iphone altitude elevation alt temperature mood coffee
+9	0.0033	16365	temperature sensor temp sensors power script sed voltage module
+10	0.00401	18968	solar energy lab pv power site arduino south center
+11	0.0007	14031	island house roque located year staff times room family
+12	0.00433	13276	pbd air label floor sensor building quality id carbon
+13	0.0021	11147	grid public stream australia electricity intervals cluster published instant
+14	0.00834	34921	temperature sensor arduino temp sensors light room humidity dsb
+15	0.00411	17569	raspberry pi cpu sensor system energy load monitor temperature
+16	0.00408	15860	gprs temperature school weather station primary level humidity fuel
+17	0.00527	17852	weather station wind intel powered temperature australia speed humidity
+18	0.0034	25777	parameter water power temperature solar status system temp sensor
+19	0.00037	57940	radiation verified unverified id sv ground pachube station rate
+20	0.00568	29399	arduino sensor ethernet shield temperature sensors dht humidity pressure
+21	0.00346	12882	temperature arduino sensor school project measuring humidity shield home
+22	0.00415	13208	cc sensor number provided temperature pachube home aq channel
+23	0.00492	15361	stats university project ditecnet quito temperature city office description
+24	0.00136	26901	stats friends followers ratio tweets favourites lists design technology
+25	0.00973	22242	temperature humidity internal sensor sensors light air temp null
+26	0.00049	42397	power computer arduino homeeasy station weather mobile rubbish back
+27	0.00367	11914	status mouse level movement ca temperature datastreams beat substation
+28	0.00166	16090	san francisco trees benefits code environmental zip risk unofficial
+29	0.00491	68429	aqe sensor origin type address index version firmware raw
+3s <900>
+327ms 323ms 403ms 398ms 487ms 345ms 322ms 381ms 419ms 326ms <910>
+334ms 359ms 487ms 354ms 341ms 363ms 324ms 326ms 329ms 334ms <920>
+327ms 336ms 354ms 340ms 385ms 342ms 328ms 343ms 424ms 376ms <930>
+328ms 324ms 326ms 333ms 341ms 331ms 326ms 329ms 436ms 425ms <940>
+344ms 343ms 497ms 395ms 323ms 339ms 459ms 332ms 379ms 331ms <950>
+367ms 323ms 325ms 375ms 332ms 324ms 478ms 359ms 319ms 322ms <960>
+380ms 450ms 384ms 325ms 322ms 334ms 360ms 359ms 337ms 326ms <970>
+323ms 326ms 363ms 339ms 331ms 372ms 328ms 353ms 358ms 364ms <980>
+344ms 325ms 325ms 339ms 330ms 336ms 324ms 342ms 323ms 341ms <990>
+338ms 327ms 412ms 351ms 326ms 338ms 338ms 371ms 331ms
+0	0.00333	21083	geiger pachube counter radiation sensor kit chips xbee cpm
+1	0.00075	19299	preliminary observational products air quality index webscraped pollutant displayed
+2	0.00819	25179	power electricity temperature current energy home watts consumption cost
+3	0.00222	14416	house temperature harbor sensors store art loggers building growth
+4	0.00142	11196	readings radiation gamma battery csn live follow android day
+5	0.00627	66581	aqe sensor origin type index address firmware version computed
+6	0.00222	13206	meters wind measured feet speed pressure located level sea
+7	0.00062	52496	radiation verified unverified steinbach marian id station pachube rate
+8	0.00291	23947	logger iphone created altitude elevation alt temperature mood coffee
+9	0.0033	16260	temperature temp sensor sensors power script sed voltage module
+10	0.00401	18855	solar energy lab pv power site south arduino center
+11	0.0007	14049	island house roque located year staff times room family
+12	0.00433	13231	pbd air label floor sensor building quality id carbon
+13	0.0021	11013	grid stream public australia electricity cluster intervals instant published
+14	0.00834	34832	temperature sensor arduino temp sensors light room humidity dsb
+15	0.00411	17720	raspberry pi sensor cpu system energy temperature load monitor
+16	0.00408	15898	gprs temperature school weather station primary level humidity fuel
+17	0.00527	17907	weather station wind intel powered temperature australia speed humidity
+18	0.0034	25612	water parameter power temperature status solar system temp sensor
+19	0.00037	58030	radiation unverified verified id germany sievert pachube manually represents
+20	0.00568	29103	arduino sensor ethernet shield temperature sensors dht humidity pressure
+21	0.00346	12975	temperature arduino sensor school project measuring shield home humidity
+22	0.00415	13215	cc sensor number temperature provided pachube home aq channel
+23	0.00492	15269	stats university project ditecnet quito city office temperature description
+24	0.00136	26919	stats followers friends ratio tweets favourites lists design uk
+25	0.00973	22235	temperature humidity internal sensor sensors light air level null
+26	0.00049	42424	power computer arduino homeeasy station weather mobile rubbish reads
+27	0.00367	11987	status mouse level movement ca temperature datastreams beat substation
+28	0.00166	16121	san francisco trees benefits code environmental zip risk unofficial
+29	0.00491	69131	aqe sensor type origin address index version firmware raw
+3s <1000>
+
+Total time: 6 minutes 21 seconds

@@ -12,6 +12,9 @@ Created on Fri Sep 23 12:05:20 2016
 '''
 import pickle
 import numpy as np
+import os.path
+
+
 #SOURCE_FILE = 'step2_generate_data_notags.pickle'
 SOURCE_FILE = 'step2_generate_data.pickle'
 INDEX_FILE = 'step4_indexing.pickle'
@@ -40,6 +43,13 @@ mallet run cc.mallet.topics.DMRTopicModel instance.mallet 30
 all_dict = pickle.load(open(SOURCE_FILE, 'rb'))
 
 def compute_score(all_dict):
+    
+    if os.path.isfile('step5_dscore_list.pickle'):
+        dscore_list = pickle.load(open('step5_dscore_list.pickle','rb'))
+        bscore_list = pickle.load(open('step5_bscore_list.pickle','rb'))
+        feedid_list = pickle.load(open('step5_feedid_list.pickle','rb'))
+        return dscore_list, bscore_list, feedid_list
+    
     tags_map = all_dict['tags_map']
     all_dict = pickle.load(open(INDEX_FILE, 'rb'))
     dmr_querier = all_dict['dmr_querier']
@@ -50,7 +60,9 @@ def compute_score(all_dict):
     print('Start to compute bm25, dmr score ... ')
     count = 0
     for feedid, tset in tags_map.items():
-        dscore = np.array(dmr_querier.DMRScore(list(tset)))
+        
+        #FIXME 自身的主题向量可直接从数据中读出
+        dscore = np.array(dmr_querier.dmr_score(list(tset))) 
         bscore = np.array(bm25_querier.BM25Score(list(tset)))
         dscore_list.append(dscore)
         bscore_list.append(bscore)
@@ -66,9 +78,8 @@ def compute_score(all_dict):
     print('Data saved!')
     return dscore_list, bscore_list, feedid_list
 
-# dscore_list, bscore_list, feedid_list = compute_score(all_dict)
 
-'''
+    '''
 步骤四，计算每个条目中不同的方法对应的排名情况
 =================================
 得到打分序列之后，看feedid对应的序列在打分中为多少名，名次越前说明准确
@@ -98,7 +109,6 @@ def compute_rank(dscore_list, bscore_list, feedid_list):
     print('The average rank of DMR is ' + str(np.mean(drank_list)))
     print('=================================')
 
-#compute_rank(dscore_list, bscore_list, feedid_list)
 
 def compute_mrank(all_dict, bscore_list, dscore_list, feedid_list, beta=0.01):
     mrank_list = []
@@ -124,6 +134,9 @@ def compute_mrank(all_dict, bscore_list, dscore_list, feedid_list, beta=0.01):
     print('The average rank of Mixed Method is ' + str(np.mean(mrank_list)))
     return mrank_list
 
+
+dscore_list, bscore_list, feedid_list = compute_score(all_dict)
+compute_rank(dscore_list, bscore_list, feedid_list)
 
 betas = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 for i in range(len(betas)):

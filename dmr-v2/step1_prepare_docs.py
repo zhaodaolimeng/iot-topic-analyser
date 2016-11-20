@@ -12,17 +12,27 @@ import re
 import time
 import codecs
 import subprocess as sp
-from subprocess import PIPE, CalledProcessError, Popen
+import sys
+
+sys.path.insert(0, '../dmr/')
+import DMR_wrapper as dmr
 
 
 STOP_WORDS = 'stopwords.txt'
-FILE_FEATURES = 'features.txt'
-FILE_TEXT = 'texts.txt'
-FILE_FEEDID = 'id.txt'
-FILE_SENSORID = 'sensor.txt'
-MALLET_INSTANCE = 'mallet.instance'
+INPUT_FEATURES = 'features.txt'
+INPUT_TEXT = 'texts.txt'
+OUTPUT_FEEDID = 'id.txt'
+OUTPUT_SENSORID = 'sensor.txt'
+OUTPUT_RUNTIME = 'runtime.txt'
+OUTPUT_ALPHAS = 'alphas.txt'
+OUTPUT_STATE_COMPRESSED = 'dmr.state.gz'
+OUTPUT_STATE = 'dmr.state.txt'
+OUTPUT_PARAMETER = 'dmr.parameters'
 
+MALLET_INSTANCE = 'mallet.instance'
 DIR = 'output/'
+
+topic_num = 30
 
 conn = c.connect(user='root', password='ictwsn', 
                      host='127.0.0.1', database='curiosity_v3')
@@ -81,10 +91,10 @@ def build_input():
     
     print('Use feed_map to construct document per sensor...')
     
-    ft = codecs.open(DIR + FILE_TEXT, 'w', 'utf-8')
-    ff = codecs.open(DIR + FILE_FEATURES, 'w', 'utf-8')
-    fidf = codecs.open(DIR + FILE_FEEDID, 'w', 'utf-8')
-    fids = codecs.open(DIR + FILE_SENSORID, 'w', 'utf-8')
+    ft = codecs.open(DIR + INPUT_TEXT, 'w', 'utf-8')
+    ff = codecs.open(DIR + INPUT_FEATURES, 'w', 'utf-8')
+    fidf = codecs.open(DIR + OUTPUT_FEEDID, 'w', 'utf-8')
+    fids = codecs.open(DIR + OUTPUT_SENSORID, 'w', 'utf-8')
     
     cursor.execute('select feedid, streamid, tags from datastream_t')
     
@@ -98,7 +108,7 @@ def build_input():
             doc = str(feed_map[fid]['desc']) + str(feed_map[fid]['title'])\
                      + ' ' + str(sid) + ' ' + str(tags)
 
-            #TODO 文本清理
+            # 文本清理
             regular_word = collections.defaultdict(int)
             doc = doc.replace('\n', ' ')
             doc = re.sub(r"http\S+", "", doc)
@@ -114,7 +124,7 @@ def build_input():
             doc = ' '.join(wordlist)
             ft.write(doc + '\n')
             
-            #TODO 只用时间作为feature
+            # 只用时间作为feature
             epoch = int(time.mktime(time.strptime('2007.01.01', '%Y.%m.%d')))
             create_time = int(feed_map[fid]['created'].timestamp() - epoch)
             lb_time = str(int(create_time / (3600*24*30*6)))
@@ -130,27 +140,39 @@ def call_dmr():
     
     # 生成mallet.instance
     print('Create instance.mallet...')
-    cmd = ['mallet', 'run', 'cc.mallet.topics.tui.DMRLoader', 
-             FILE_TEXT, FILE_FEATURES, MALLET_INSTANCE]
-             
-    p = sp.Popen(cmd, stdout=sp.PIPE, shell=True, cwd=DIR)
-    out, err = p.communicate()
-    print(out)
+    sp.check_call(['mallet', 'run', 'cc.mallet.topics.tui.DMRLoader', 
+             INPUT_TEXT, INPUT_FEATURES, MALLET_INSTANCE], 
+             stdout=sp.PIPE, shell=True, cwd=DIR)
     
     # 生成dmr.parameters和dmr.state.gz
     print('Create topic index...')
-    p = sp.Popen(['mallet', 'run', 'cc.mallet.topics.DMRTopicModel',
-             MALLET_INSTANCE, '30'], shell=True, stdout=sp.PIPE, cwd=DIR)
-    out, err = p.communicate()
-    print(out)
+    with codecs.open(DIR + OUTPUT_RUNTIME, 'w', 'utf-8') as f:
+        sp.check_call(['mallet', 'run', 'cc.mallet.topics.DMRTopicModel',
+                 MALLET_INSTANCE, str(topic_num)], shell=True, stdout=f, cwd=DIR)
     
-    #TODO 从out的最后几行读出主题号对应的：alpha值、主题数目信息
-    
+    # 解压dmr文件
+    print('Decompressing text file...')
     
     pass
 
+def compute_topic_vector():
+    
+    #TODO 从out的最后几行读出主题号对应的：alpha值、主题数目信息
+    # 参考 Parameter estimation for text analysis，公式(86)
+    f_alpha = []
+    with codecs.open(OUTPUT_RUNTIME, 'r', 'utf-8') as f:
+        last_lines = tail(f, 33)
+        for line in last_lines.split('\n')[:-3]:
+            for field in line.split('\t'):
+                f_alpha.append(float(field[1]))
+
+    dmr_querier = dmr.DMR_wapper(OUTPUT_STATE, OUTPUT_PARAMETER)
+    dmr_querier.DMRScore(query_list, f_alpha);
+    
+
     
 def tail( f, lines=20 ):
+    
     total_lines_wanted = lines
 
     BLOCK_SIZE = 1024
