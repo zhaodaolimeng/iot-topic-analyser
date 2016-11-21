@@ -245,4 +245,3 @@ if __name__ == "__main__":
             for z in range(N_TOPICS):
                 save_document_image("topicimg/topic%d-%d.png" % (it,z),
                                     phi[z,:].reshape(width,-1))
-
