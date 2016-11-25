@@ -84,9 +84,6 @@ class TA:
                     z = self._sample_index(p) # 采样一个主题
                     self.topics[(m, i)] = z
                     
-
-
-                    
         pass
     
     """
