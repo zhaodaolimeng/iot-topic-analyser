@@ -66,6 +66,7 @@ if __name__ == "__main__":
     result_dict = dict()
     result_dict['dataset'] = test_set
     test_set.p = test_proba
+    test_set.name2index = class_dict
     
     pickle.dump(result_dict, open(FILE_PREPARE, 'wb'))
     

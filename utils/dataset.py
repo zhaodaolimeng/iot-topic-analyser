@@ -12,6 +12,7 @@ class Dataset(object):
         self.X = []
         self.y = []
         self.p = []
+        self.name2index = dict()
         self.size = 0
         pass
     
@@ -21,7 +22,6 @@ class Dataset(object):
         self.y.append(result)
         self.size += 1
         pass
-    
     
     '''
     返回一个分割之后的子集
