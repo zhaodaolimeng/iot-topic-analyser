@@ -89,12 +89,15 @@ class RfRefiner(object):
         # 得到每个组对应的sensor的分布sensor_proba
         for idx, cluster in enumerate(cluster_label):
             sensor_proba = []  # 当前组每个节点的分布 n*len(features[0])
+            sensor_id_list = []
             for sensor_idx in group_dict[self.group_id[idx]]:
-
                 sensor_proba.append(self.sensor_p[sensor_idx])
-            self.adjust_sensor_choice(sensor_proba, mu_list[cluster])
+                sensor_id_list.append(sensor_idx)
+            choice = self.adjust_sensor_choice(sensor_proba, mu_list[cluster])
+            for inner_idx, sensor_idx in enumerate(sensor_id_list):
+                self.sensor_choice[sensor_idx] = choice[inner_idx]
 
-        pass
+        return self.sensor_choice
 
     """
     X为每个组中sensor_choice的比例，组个数 * sensor_choice类别数
@@ -138,7 +141,7 @@ class RfRefiner(object):
     每个sensor的输出边
     """
     @staticmethod
-    def adjust_sensor_choice(sensor_proba, type_target, portion_lambda=1, rounding_scale=10):
+    def adjust_sensor_choice(sensor_proba, type_target, portion_lambda=0.1, rounding_scale=10):
 
         """
         sensor_proba为第一层节点
@@ -169,9 +172,13 @@ class RfRefiner(object):
         G = nx.DiGraph()
         G.add_edges_from(graph_edge)
         flow_dict = nx.max_flow_min_cost(G, 0, 1 + n_sensors + len(type_target))
-        print(flow_dict)
 
-        pass
+        choice = []
+        for node_idx in range(n_sensors):
+            if 1 + node_idx in flow_dict:
+                choice.append([to for to, c in flow_dict[1 + node_idx].items() if c == 1][0] - n_sensors - 1)
+
+        return choice
 
 
 if __name__ == "__main__":
@@ -180,17 +187,25 @@ if __name__ == "__main__":
     FILE_PREPARE = "prepare.pickle"
     test_set = pickle.load(open(FILE_PREPARE, "rb"))['dataset']
 
+    def compute_acc(y, y_test):
+        acc = len([c for idx, c in enumerate(y) if c == y_test[idx]])
+        return 1.0 * acc / len(y)
+
+    # 加载标签y
+    y_trans = test_set.name2index
+    index2name = dict()
+    for k,v in test_set.name2index.items():
+        index2name[v] = k
+
+    # 获得仅使用Random Forest得到的结果 max index
+    rf_idx = [np.argmax(plist) for plist in test_set.p]
+    y_before = [index2name[idx] for idx in rf_idx]
+    print(compute_acc(test_set.y, y_before))
+
     refine = RfRefiner(test_set)
+    sensor_choice = refine.run_once()
+    y_after = [index2name[idx] for idx in sensor_choice]
+    print(compute_acc(test_set.y, y_after))
 
-    refine.run_once()
+    # TODO 交叉验证
 
-    """
-    group_list = ['']*len(test_set.labels)
-    sensor_list = ['']*len(test_set.labels)
-    
-    for i, label_str in enumerate(test_set.labels):
-        group_list[i], sensor_list[i] = label_str.split(',', 1)
-    
-    # for i, label_str in enumerate(test_set.labels):
-        
-    """
