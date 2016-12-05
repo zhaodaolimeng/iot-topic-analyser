@@ -5,6 +5,7 @@ Created on Thu Nov 24 15:41:17 2016
 @author: limeng
 """
 
+
 class Dataset(object):
     
     def __init__(self):
@@ -43,8 +44,6 @@ class Dataset(object):
                 
         return instance_test, instance_train
 
-        
     def data_merge(self, instance):
         for i in range(instance.size):
             self.add_item(instance.labels[i], instance.X[i], instance.y[i])
-    

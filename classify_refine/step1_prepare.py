@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
-
 if __name__ == "__main__":
     
     import pickle
@@ -15,7 +13,7 @@ if __name__ == "__main__":
     '''
     只用有人工标注标签的数据进行实验
     '''
-    def load():
+    def load_dataset():
         
         xively_series = pickle.load(open(FILE_FEATURE, "rb"))
         id_label_dict = dict()
@@ -23,10 +21,8 @@ if __name__ == "__main__":
         for idx, l in enumerate(xively_series['labels']):
             id_label_dict[l] = xively_series['X'][idx]
 
-        
         dataset_labeled = Dataset()
-        conn = c.connect(user='root', password='ictwsn', 
-                       host='127.0.0.1', database='curiosity_v3')
+        conn = c.connect(user='root', password='ictwsn', host='10.22.0.77', database='curiosity_v3')
         cursor = conn.cursor()
         cursor.execute('''
             select feedid, datastreamid, labels as label
@@ -42,10 +38,9 @@ if __name__ == "__main__":
         return dataset_labeled
         
     
-    dataset_labeled = load()
+    dataset_labeled = load_dataset()
     test_set, train_set = dataset_labeled.data_split()
-    
-    
+
     rfc = RandomForestClassifier(n_estimators=100)
     rfc.fit(train_set.X, train_set.y)
     preds = rfc.predict(train_set.X)
@@ -55,13 +50,13 @@ if __name__ == "__main__":
     for idx, cls in enumerate(rfc.classes_):
         class_dict[cls] = idx
     
-    # merge prob
+    # 测试集部分概率向量中，对应的位置直接为1
     for i in range(train_set.size):
         arr = [0.0]*len(class_dict)
         arr[class_dict[train_set.y[i]]] = 1.0
         test_proba.append(arr)
         
-    # merge dataset
+    # 合并数据集
     test_set.data_merge(train_set)
     result_dict = dict()
     result_dict['dataset'] = test_set
@@ -69,7 +64,3 @@ if __name__ == "__main__":
     test_set.name2index = class_dict
     
     pickle.dump(result_dict, open(FILE_PREPARE, 'wb'))
-    
-
-    
-    
