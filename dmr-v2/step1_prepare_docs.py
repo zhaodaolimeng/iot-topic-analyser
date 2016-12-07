@@ -155,8 +155,7 @@ def call_dmr():
     
     pass
 
-def compute_topic_vector():
-    
+    def compute_topic_vector():
     #TODO 从out的最后几行读出主题号对应的：alpha值、主题数目信息
     # 参考 Parameter estimation for text analysis，公式(86)
     f_alpha = []
