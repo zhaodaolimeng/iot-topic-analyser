@@ -88,7 +88,7 @@ class RfRefiner:
 
         # 得到每个组对应的sensor的分布sensor_proba
         for idx, cluster in enumerate(cluster_label):
-            sensor_proba = []  # 当前组每个节点的分布 n*len(features[0])
+            sensor_proba = []  #当前组每个节点的分布 n*len(features[0])
             sensor_id_list = []
             for sensor_idx in group_dict[self.group_id[idx]]:
                 sensor_proba.append(self.sensor_p[sensor_idx])
@@ -168,9 +168,9 @@ class RfRefiner:
         for e in graph_edge:
             e[2]['weight'] = int(ratio*e[2]['weight'])
 
-        G = nx.DiGraph()
-        G.add_edges_from(graph_edge)
-        flow_dict = nx.max_flow_min_cost(G, 0, 1 + n_sensors + len(type_target))
+        graph = nx.DiGraph()
+        graph.add_edges_from(graph_edge)
+        flow_dict = nx.max_flow_min_cost(graph, 0, 1 + n_sensors + len(type_target))
 
         choice = []
         for node_idx in range(n_sensors):
