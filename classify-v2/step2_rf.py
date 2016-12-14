@@ -133,28 +133,37 @@ for i in range(len(bundle)):
     all_label[i] = bundle[i][1]
     all_feature[i] = bundle[i][2]
 
-test_tuple = all_tuple[0:n_per_fold]
-test_label = all_label[0:n_per_fold]
-test_feature = all_feature[0:n_per_fold]
-train_tuple = all_tuple[n_per_fold:]
-train_label = all_label[n_per_fold:]
-train_feature = all_feature[n_per_fold:]
+for i in range(n_fold):
+    test_tuple = all_tuple[i * n_per_fold:(i + 1) * n_per_fold]
+    test_label = all_label[i * n_per_fold:(i + 1) * n_per_fold]
+    test_feature = all_feature[i * n_per_fold:(i + 1) * n_per_fold]
+    train_tuple = all_tuple[0:i * n_per_fold] + all_tuple[(i + 1) * n_per_fold:]
+    train_label = all_label[0:i * n_per_fold] + all_label[(i + 1) * n_per_fold:]
+    train_feature = all_feature[0:i * n_per_fold] + all_feature[(i + 1) * n_per_fold:]
 
-rfc = RandomForestClassifier(n_estimators=100)
-rfc.fit(train_feature, train_label)
+    rfc = RandomForestClassifier(n_estimators=100)
+    rfc.fit(train_feature, train_label)
 
-index2name = rfc.classes_  # 概率对应位置的标签
-name2index = {cls: idx for idx, cls in enumerate(rfc.classes_)}
-test_proba = rfc.predict_proba(test_feature).tolist()
+    index2name = rfc.classes_  # 概率对应位置的标签
+    name2index = {cls: idx for idx, cls in enumerate(rfc.classes_)}
+    test_proba = []
+    result_proba = rfc.predict_proba(test_feature).tolist()
 
-for i in range(len(train_tuple)):
-    arr = [0.0] * len(index2name)
-    arr[name2index[train_label[i]]] = 1.0
-    test_proba.append(arr)
+    for ii in range(i*n_per_fold):
+        arr = [0.0] * len(index2name)
+        arr[name2index[train_label[ii]]] = 1.0
+        test_proba.append(arr)
 
-sensor_choice = [np.argmax(p) for p in test_proba]
-y_before = [index2name[idx] for idx in sensor_choice]
-print(compute_acc(all_label, y_before))
-sensor_choice = result_refine(all_tuple, test_proba, sensor_choice)  # 结果优化
-y_after = [index2name[idx] for idx in sensor_choice]
-print(compute_acc(all_label, y_after))
+    test_proba += result_proba
+
+    for ii in range(i*n_per_fold, len(train_tuple)):
+        arr = [0.0] * len(index2name)
+        arr[name2index[train_label[ii]]] = 1.0
+        test_proba.append(arr)
+
+    sensor_choice = [np.argmax(p) for p in test_proba]
+    y_before = [index2name[idx] for idx in sensor_choice]
+    print(compute_acc(all_label, y_before))
+    sensor_choice = result_refine(all_tuple, test_proba, sensor_choice)  # 结果优化
+    y_after = [index2name[idx] for idx in sensor_choice]
+    print(compute_acc(all_label, y_after))
