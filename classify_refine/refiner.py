@@ -70,12 +70,10 @@ class RfRefiner:
 
         return group_p, group_id
 
-    """
-    进行一次聚类+一次sensor_choice的优化
-    """
-
     def run_once(self):
-
+        """
+        进行一次聚类+一次sensor_choice的优化
+        """
         # 执行一次聚类
         cluster_label, mu_list = self.kmeans(self.group_p, max_iter=10)
 
@@ -99,14 +97,13 @@ class RfRefiner:
 
         return self.sensor_choice
 
-    """
-    X为每个组中sensor_choice的比例，组个数 * sensor_choice类别数
-    cluster_label为每个组属于的cluster的编号，组数目 * 1
-    mu_list为每个cluster对应的坐标值，cluster数目 * sensor_choice类别数
-    """
     @staticmethod
     def kmeans(features, n_mu=10, max_iter=10):
-
+        """
+        X为每个组中sensor_choice的比例，组个数 * sensor_choice类别数
+        cluster_label为每个组属于的cluster的编号，组数目 * 1
+        mu_list为每个cluster对应的坐标值，cluster数目 * sensor_choice类别数
+        """
         cluster_label = [0] * len(features)
         mu_list = np.random.rand(n_mu, len(features[0]))  # 每个聚类的中心K*27
         mu_list /= np.matrix(np.sum(mu_list, axis=1)).T

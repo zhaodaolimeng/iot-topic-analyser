@@ -140,6 +140,7 @@ if __name__ == "__main__":
     if os.path.isfile(PICKLE_LOADED_FROM_DB):
         raw_series_dict = pickle.load(open(PICKLE_LOADED_FROM_DB, 'rb'))
     else:
+        # 数据集有变动时要删除同目录下的两个pickle文件
         raw_series_dict = fetch_raw_datapoints(db_conn, label_dict)
         pickle.dump(raw_series_dict, open(PICKLE_LOADED_FROM_DB, 'wb'))
 

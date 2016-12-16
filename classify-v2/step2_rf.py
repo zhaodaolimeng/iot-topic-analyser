@@ -146,24 +146,25 @@ for i in range(n_fold):
 
     index2name = rfc.classes_  # 概率对应位置的标签
     name2index = {cls: idx for idx, cls in enumerate(rfc.classes_)}
-    test_proba = []
     result_proba = rfc.predict_proba(test_feature).tolist()
 
+    # 1. 使用常规方法
+    sensor_choice = [np.argmax(p) for p in result_proba]
+    y_before = [index2name[idx] for idx in sensor_choice]
+    print(compute_acc(test_label, y_before))
+
+    # 2. 使用常规方法+优化
+    test_proba = []
     for ii in range(i*n_per_fold):
         arr = [0.0] * len(index2name)
         arr[name2index[train_label[ii]]] = 1.0
         test_proba.append(arr)
-
     test_proba += result_proba
-
     for ii in range(i*n_per_fold, len(train_tuple)):
         arr = [0.0] * len(index2name)
         arr[name2index[train_label[ii]]] = 1.0
         test_proba.append(arr)
-
     sensor_choice = [np.argmax(p) for p in test_proba]
-    y_before = [index2name[idx] for idx in sensor_choice]
-    print(compute_acc(all_label, y_before))
     sensor_choice = result_refine(all_tuple, test_proba, sensor_choice)  # 结果优化
-    y_after = [index2name[idx] for idx in sensor_choice]
-    print(compute_acc(all_label, y_after))
+    y_after = [index2name[idx] for idx in sensor_choice[i*n_per_fold:(i+1)*n_per_fold]]
+    print(compute_acc(test_label, y_after))
