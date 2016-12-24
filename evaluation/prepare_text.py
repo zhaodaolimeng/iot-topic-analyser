@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-数据准备，调用百度翻译
+文本数据准备，调用百度翻译
+create table translation_t(feedid bigint, iana varchar(20), translated text);
 """
 
 if __name__ == "__main__":
 
     import mysql.connector as c
     import pandas as pd
-    import utils.translator as trans
+    import utils.Translator as trans
     import functools as ft
     import collections
 
@@ -40,8 +41,8 @@ if __name__ == "__main__":
     # result_dict = dict()
     for feed_id, desc in collections.OrderedDict(sorted(rawtext_dict.items())).items():
 
-        if feed_id < 118495:
-            continue
+        # if feed_id < 343203114:
+        #     continue
 
         print(desc[:100 if len(desc) > 100 else len(desc) - 1])
 

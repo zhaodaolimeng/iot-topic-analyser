@@ -34,11 +34,24 @@ def fetch_description(desc_file, connection):
 
 
 def fetch_feature_and_save_to_file(feed_ids, features_file, connection):
+    """
+    形成feature文件，文件格式为(时间归类；地理类型；是否有位置标签)
+    :param feed_ids:  需要提取的id
+    :param features_file: 生成的文件
+    :param connection: 数据库连接
+    :return:
+    """
     cursor = connection.cursor()
-    cursor.execute('select feedid, lat, lng, created from feed_t')
+    cursor.execute('select locaiton_type, created from feed_t')
+    location_type, create_time = cursor.fetchone()   # 使用最早的设备的时间作为初始时间
+    epoch = int(create_time)
     result = cursor.fetchall()
-    # TODO features加工
-    pass
+
+    with codecs.open(features_file, 'r') as f:
+        for location_type, create_time in result:
+            time_from = int(create_time.timestamp() - epoch)
+            lb_time = str(int(time_from / (3600 * 24 * 30 * 6)))
+            f.write('f_loc=' + location_type + ' f_time = ' + lb_time)
 
 if __name__ == '__main__':
 
