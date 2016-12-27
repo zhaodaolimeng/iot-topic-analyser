@@ -12,7 +12,7 @@ import re
 import time
 import codecs
 import subprocess as sp
-import utils.dmr_wrapper as dmr
+import utils.DmrWrapper as dmr
 
 STOP_WORDS = 'stopwords.txt'
 INPUT_FEATURES = 'features.txt'

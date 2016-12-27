@@ -8,8 +8,8 @@ if __name__ == "__main__":
 
     import mysql.connector as c
     import pandas as pd
-    import utils.Translator as trans
     import functools as ft
+    import utils.Translator as trans
     import collections
 
     db_conn = c.connect(user='root', password='ictwsn', host='10.22.0.77', database='curiosity_20161204')

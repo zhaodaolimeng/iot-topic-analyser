@@ -2,7 +2,7 @@ from urllib import parse
 import requests
 
 
-def reverse_geoencoding(lat, lng):
+def reverse_geo(lat, lng):
     # Base URL being accessed
     url = 'https://maps.googleapis.com/maps/api/geocode/json'
 

@@ -16,7 +16,7 @@ EPSILON = 0.25
 
 class BM25(object):
 
-    def __init__(self, docs, delimiter='|'):
+    def __init__(self, docs, work_dir, delimiter='|'):
         self.dictionary = corpora.Dictionary()
         self.DF = {}
         self.delimiter = delimiter
@@ -24,7 +24,7 @@ class BM25(object):
         self.DocIDF = {}
         self.N = 0
         self.DocAvgLen = 0
-        self.docs_location = docs
+        self.docs_location = work_dir + docs
         self.DocLen = []
 
         self.build_dictionary()

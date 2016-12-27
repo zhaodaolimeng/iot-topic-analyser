@@ -14,43 +14,47 @@ import gzip
 
 class DMR(object):
 
-    def __init__(self, input_text, input_features, topic_num=20):
+    def __init__(self, input_text, input_features, work_dir, topic_num=20):
         """
         训练DMR模型，提供查询方法
         :param input_text:
         :param input_features:
         :param topic_num:
         """
-        self.working_directory = 'output/'
+        self.working_directory = work_dir
         self.word_dict = dict()
         self.vd_list = []  # 读入的每个文档的主题分布
 
-        mallet_instance = self.working_directory + 'mallet.instance'
-        output_runtime = self.working_directory + 'runtime.txt'
-        dmr_state_compressed = self.working_directory + 'dmr.state.gz'
-        dmr_state = self.working_directory + 'dmr.state.txt'
-        dmr_topic = self.working_directory + 'dmr-topics.txt'
+        mallet_instance = 'mallet.instance'
+        output_runtime = 'runtime.txt'
+        dmr_state_compressed = 'dmr.state.gz'
+        dmr_state = 'dmr.state.txt'
+        dmr_topic = 'dmr-topics.txt'
 
         # 生成mallet.instance
         print('Create instance.mallet...')
-        sp.check_call(['mallet', 'run', 'cc.mallet.topics.tui.DMRLoader'],
-                      input_text, input_features, mallet_instance,
+        print(self.working_directory)
+        print(input_text)
+        print(input_features)
+        sp.check_call(['mallet', 'run', 'cc.mallet.topics.tui.DMRLoader',
+                       input_text, input_features, mallet_instance],
                       stdout=sp.PIPE, shell=True, cwd=self.working_directory)
         # 生成dmr.parameters和dmr.state.gz
         print('Create topic index...')
-        with codecs.open(output_runtime, 'w', 'utf-8') as f:
+        with codecs.open(self.working_directory + output_runtime, 'w', 'utf-8') as f:
             sp.check_call(['mallet', 'run', 'cc.mallet.topics.DMRTopicModel',
-                           mallet_instance, str(topic_num)], shell=True, stdout=f, cwd=self.working_directory)
+                           mallet_instance, str(topic_num)],
+                          shell=True, stdout=f, cwd=self.working_directory)
 
         # 解压dmr.state.gz
         print('Unzip dmr state file...')
-        with gzip.open(dmr_state_compressed, 'rb') as fin:
-            with open(dmr_state, 'wb') as fout:
+        with gzip.open(work_dir + dmr_state_compressed, 'rb') as fin:
+            with open(work_dir + dmr_state, 'wb') as fout:
                 fout.write(fin.read())
 
         print('Starting to build index ... ')
         df = pd.read_csv(
-            dmr_state,
+            work_dir + dmr_state,
             delimiter=' ',
             dtype={'#doc': np.int64, 'source': np.str, 'pos': np.int64,
                    'typeindex': np.int64, 'type': np.str, 'topic': np.int64},
@@ -58,7 +62,7 @@ class DMR(object):
 
         # 读入每个文档对应的主题
         print('Start to load document-topic file ...')
-        df_doc2topic = pd.read_csv(dmr_topic, delimiter=' ', header=None, skiprows=1)
+        df_doc2topic = pd.read_csv(work_dir + dmr_topic, delimiter=' ', header=None, skiprows=1)
         for idx, row in df_doc2topic.iterrows():
             vd = [0.0] * topic_num
             for i in range(topic_num):
@@ -80,14 +84,28 @@ class DMR(object):
         主题模型查询
         计算查询q的主题向量分布
         """
-        vq = [self.word_dict[query_term] for query_term in query_list if query_term in self.word_dict]
+        # vq = [self.word_dict[query_term] for query_term in query_list if query_term in self.word_dict]
+        # vq = np.array(vq)
+        # vq /= np.sum(vq)
+        # rank_doc = []
+        # for vd in self.vd_list:
+        #     vd = np.array(vd) + alpha
+        #     vd /= np.sum(vd)
+        #     rank_doc.append(1-0.5*sum((vq-vd)*np.log(vq/vd)))
+        # return rank_doc
+        vq = [1.0] * len(self.vd_list[0])  # 防止ValueError
+        for query_term in query_list:
+            if query_term in self.word_dict:
+                vq = map(sum, zip([vq, self.word_dict[query_term]]))
+                vq = self.word_dict[query_term]
+
         vq = np.array(vq)
         vq /= np.sum(vq)
         rank_doc = []
         for vd in self.vd_list:
             vd = np.array(vd) + alpha
             vd /= np.sum(vd)
-            rank_doc.append(1-0.5*sum((vq-vd)*np.log(vq/vd)))
+            rank_doc.append(1 - 0.5 * sum((vq - vd) * np.log(vq / vd)))
         return rank_doc
 
     def optimized_score(self, query_list, bm25, beta=0.4):

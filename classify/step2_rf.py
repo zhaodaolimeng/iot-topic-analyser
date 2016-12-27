@@ -96,7 +96,7 @@ def result_refine(tuples, sensor_p, choices, max_iter=3):
             group_dict[f].append(idx)
 
         for idx, cluster in enumerate(cluster_label):
-            sensor_proba = []  #当前组每个节点的分布 n*len(features[0])
+            sensor_proba = []  # 当前组每个节点的分布 n*len(features[0])
             sensor_id_list = []
             for sensor_idx in group_dict[group_id[idx]]:
                 sensor_proba.append(sensor_p[sensor_idx])
