@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-特征数据准备，调用google reverse geo-encoding
-create table feature_t(feedid bigint, created date, location_type varchar(50));
-insert into features_t (feedid) select id from feed_t as T;
+特征数据准备
+
+
 """
 import functools as ft
 import mysql.connector as c
@@ -16,7 +16,11 @@ def update_location_type(conn):
     cursor = conn.cursor()
     print("Loading feedid ...")
     query_set = set()
-    cursor.execute("select feedid, location_type from features_t where location_type is NULL")
+    # cursor.execute("select feedid, location_type from features_t where location_type=''")
+    cursor.execute("""
+        select feedid, location_type from features_t
+        where location_type='UNKNOWN' or location_type = 'yes'
+    """)
     for feed_id,_ in cursor.fetchall():
         query_set.add(feed_id)
 

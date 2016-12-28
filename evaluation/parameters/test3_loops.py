@@ -1,6 +1,6 @@
 """
-1. 网络流中前后两层的权重配比lambda的实验
-2. K-means中的K对结果的影响
+测试不同的迭代次数对标签生成结果的影响
+迭代分K-means的迭代和整体迭代，这里只对外部迭代进行测试
 """
 from evaluation.parameters.DataLoader import *
 
@@ -11,10 +11,11 @@ if __name__ == "__main__":
     n_fold = 10
     n_per_fold = int(len(all_tuple) / n_fold)
 
-    # 对于K-means中的参数K
-    print("Test parameters in K-means ... ")
-    for k in range(2, 20, 2):
-        print('For k = ' + str(k))
+    # 对于网络流中的权重参数lambda
+    print("Test iteration in network flow ... ")
+    its = list(range(1, 10))
+    for iteration in its:
+        print('For iteration = ' + str(iteration))
         for i in range(n_fold):
             test_tuple, test_label, test_feature, train_tuple, train_label, train_feature = \
                 slice_dataset(all_tuple, all_feature, all_label, n_per_fold, i)
@@ -32,8 +33,8 @@ if __name__ == "__main__":
             acc_before = compute_acc(test_label, y_before)
             # 2. 使用常规方法+优化
             y_after = predict_with_different_parameters(
-                all_tuple, train_label, i, n_per_fold, index2name, name2index, result_proba, _k=10, _lambda=0.01)
+                all_tuple, train_label, i, n_per_fold, index2name, name2index, result_proba,
+                _max_iter=iteration, _k=10, _lambda=0.01)
 
             acc_after = compute_acc(test_label, y_after)
             print(str(acc_before) + ', ' + str(acc_after))
-

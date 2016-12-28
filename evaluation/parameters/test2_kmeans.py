@@ -1,6 +1,5 @@
 """
-1. 网络流中前后两层的权重配比lambda的实验
-2. K-means中的K对结果的影响
+K-means中的K对标签生成结果的影响
 """
 from evaluation.parameters.DataLoader import *
 
@@ -11,10 +10,11 @@ if __name__ == "__main__":
     n_fold = 10
     n_per_fold = int(len(all_tuple) / n_fold)
 
-    # 对于K-means中的参数K
-    print("Test parameters in K-means ... ")
-    for k in range(2, 20, 2):
-        print('For k = ' + str(k))
+    # 对于网络流中的权重参数lambda
+    print("Test parameters in network flow ... ")
+    lambdas = [0.0025, 0.005, 0.01, 0.02, 0.04, 0.08, 0.16, 0.32]
+    for lambda_ in lambdas:
+        print('For lambda = ' + str(lambda_))
         for i in range(n_fold):
             test_tuple, test_label, test_feature, train_tuple, train_label, train_feature = \
                 slice_dataset(all_tuple, all_feature, all_label, n_per_fold, i)
@@ -36,4 +36,3 @@ if __name__ == "__main__":
 
             acc_after = compute_acc(test_label, y_after)
             print(str(acc_before) + ', ' + str(acc_after))
-

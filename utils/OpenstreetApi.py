@@ -23,7 +23,7 @@ def reverse_geo(lat, lng):
         osm_dict = {'way': 'W', 'node': 'N', 'relation': 'R'}
         return r["osm_id"], osm_dict[r["osm_type"]]
     except Exception:
-        return "UNKNOWN"
+        return "REVERSE_GEO_ERROR"
 
 
 def lookup_place_type(osm_id, o_type):
@@ -33,11 +33,15 @@ def lookup_place_type(osm_id, o_type):
         'osm_ids': o_type+osm_id
     }
     querystring = parse.urlencode(parms)
+    r = ""
     try:
         r = requests.get(url + '?' + querystring).json()
+        if r[0]["type"] == 'yes':
+            return r[0]["class"]
         return r[0]["type"]
     except Exception:
-        return "UNKNOWN"
+        print(r)
+        return "LOOKUP_ERROR"
 
 
 def location_type(lat, lng):
@@ -45,6 +49,8 @@ def location_type(lat, lng):
     min_delay = delay
     while True:
         try:
+            if lat is None or lng is None:
+                return "NOT_SET"
             o_id, o_type = reverse_geo(lat, lng)
             l_type = lookup_place_type(o_id, o_type)
             print("Type = " + l_type)
@@ -54,5 +60,5 @@ def location_type(lat, lng):
             print("Retry...")
             delay *= 2
         except Exception:
-            return "UNKNOWN"
+            return "ERROR"
     return l_type
