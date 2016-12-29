@@ -16,7 +16,7 @@ EPSILON = 0.25
 
 class BM25(object):
 
-    def __init__(self, docs, work_dir, delimiter='|'):
+    def __init__(self, docs, work_dir, delimiter=' '):
         self.dictionary = corpora.Dictionary()
         self.DF = {}
         self.delimiter = delimiter

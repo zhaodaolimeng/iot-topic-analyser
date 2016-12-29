@@ -84,22 +84,12 @@ class DMR(object):
         主题模型查询
         计算查询q的主题向量分布
         """
-        # vq = [self.word_dict[query_term] for query_term in query_list if query_term in self.word_dict]
-        # vq = np.array(vq)
-        # vq /= np.sum(vq)
-        # rank_doc = []
-        # for vd in self.vd_list:
-        #     vd = np.array(vd) + alpha
-        #     vd /= np.sum(vd)
-        #     rank_doc.append(1-0.5*sum((vq-vd)*np.log(vq/vd)))
-        # return rank_doc
-        vq = [1.0] * len(self.vd_list[0])  # 防止ValueError
+        vq = np.zeros(shape=(len(self.vd_list[0])))
         for query_term in query_list:
             if query_term in self.word_dict:
-                vq = map(sum, zip([vq, self.word_dict[query_term]]))
-                vq = self.word_dict[query_term]
+                # vq = map(sum, zip([vq, self.word_dict[query_term]]))
+                vq += np.array(self.word_dict[query_term])
 
-        vq = np.array(vq)
         vq /= np.sum(vq)
         rank_doc = []
         for vd in self.vd_list:
@@ -111,6 +101,7 @@ class DMR(object):
     def optimized_score(self, query_list, bm25, beta=0.4):
         """
         与bm25方法进行混合查询
+        :param query_list:
         :param bm25:
         :param beta:
         :return:

@@ -20,9 +20,6 @@ def baidu_translate(q):
 
     # 检查是否是英文，如果不是英文则使用百度翻译
     iana, _ = langid.classify(q)
-    if iana == 'la' and "Cost UK Gateway" in q:
-        iana = 'en'  # FIXME dirty hack
-
     if iana == 'en':
         print("EN detected, skip.")
         return q, iana
