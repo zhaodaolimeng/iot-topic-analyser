@@ -10,11 +10,7 @@
         created date
     );
 """
-import functools as ft
 import mysql.connector as c
-import pandas as pd
-import utils.Translator as trans
-import collections
 import langid
 from utils.OpenstreetApi import location_type
 
@@ -85,5 +81,5 @@ if __name__ == "__main__":
         d_dict[feed_id] = trim_concat([description, device_name, title, tags])
         g_dict[feed_id] = (lat, lng, created_time)
 
-    # gather_text(d_dict, db_conn)
+    gather_text(d_dict, db_conn)
     # gather_features(g_dict, db_conn)

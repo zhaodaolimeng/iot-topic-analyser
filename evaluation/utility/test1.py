@@ -3,23 +3,24 @@
 数据无缺失时DMR和TFIDF的Rank对比
 每次输入为所有的数据集，以feed_t.tags作为输入
 """
+import os
+import pickle
+import random
+
+import mysql.connector as c
+
 from lib.BM25 import BM25
 from lib.DMR import DMR
-from evaluation.FileHelper import *
-
-import random
-import pickle
-import os
-import mysql.connector as c
+from utils.DMRHelper import *
 
 if __name__ == '__main__':
     random.seed(0)
     conn = c.connect(user='root', password='ictwsn', host='10.22.0.77', database='curiosity_20161226')
-    w_dir = "output_test1/"
+    w_dir = "output/"
     file_text = 'text.in'
     file_features = 'features.in'
-    cached_result = 'test1_cached.pickle'
-    rank_result = 'test1_result.pickle'
+    cached_result = w_dir + 'test1_cached.pickle'
+    rank_result = w_dir + 'test1_result.pickle'
 
     if not os.path.exists(w_dir):
         os.makedirs(w_dir)

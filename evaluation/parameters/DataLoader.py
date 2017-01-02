@@ -1,7 +1,6 @@
 import pickle
 from random import shuffle
-from sklearn.ensemble import RandomForestClassifier
-from evaluation.ClassifyHelper import *
+from utils.ClassifyHelper import *
 
 
 def prepare_data():

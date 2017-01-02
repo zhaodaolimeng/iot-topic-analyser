@@ -3,6 +3,7 @@
 2. K-means中的K对结果的影响
 """
 from evaluation.parameters.DataLoader import *
+from sklearn.ensemble import RandomForestClassifier
 
 if __name__ == "__main__":
 
