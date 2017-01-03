@@ -10,7 +10,6 @@ def is_english(s):
         s.encode('ascii')
         return True
     except UnicodeEncodeError:
-        print("it was not a ascii-encoded unicode string")
         return False
 
 
@@ -103,7 +102,8 @@ def fetch_and_save_feature_enhanced(desc_file, feature_file, connection, extends
     for feed_id, streamid, doc, l_type, create_time in cursor.fetchall():
 
         # 生成文当前对doc进行补全
-        doc = doc + extends_dict[(feed_id, streamid)]
+        if (feed_id, streamid) in extends_dict:
+            doc = doc + extends_dict[(feed_id, streamid)]
 
         # 时间
         time_from = time.mktime(create_time.timetuple()) - epoch

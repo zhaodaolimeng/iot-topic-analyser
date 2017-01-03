@@ -38,7 +38,7 @@ if __name__ == '__main__':
         pickle.dump((fid_list, regular_set, dmr, bm25), open(cached_result, 'wb'))
 
     cursor = conn.cursor()
-    cursor.execute("select id, tags from feed_t where title is not null")
+    cursor.execute("select id, tags from feed_t where tags is not null")
     d_result = []
     b_result = []
     f_set = set(fid_list)

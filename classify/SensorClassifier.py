@@ -3,8 +3,6 @@
 """
 import math
 import pywt
-import mysql.connector as c
-import pandas as pd
 import numpy as np
 import networkx as nx
 import datetime as dt
@@ -13,29 +11,39 @@ from scipy.stats import variation, linregress
 from sklearn.ensemble import RandomForestClassifier
 
 
+def fetch_raw_datapoints(db_conn, tuple_list):
+    """
+    从数据库读取指定(feedid,streamid)对应的数据序列
+    该方法放到这里是因为sql connection在类中无法被序列化
+    """
+    series_dict = dict()  # 每个(feedid, datastreamid)对应一个(time_at, val)的list
+    cursor = db_conn.cursor()
+    for f_id, s_id in tuple_list:
+        cursor.execute("""
+            select feedid, datastreamid, time_at, val from datapoint_t
+            where feedid=%s and datastreamid=%s
+        """, (f_id, s_id))
+        series_dict[(f_id, s_id)] = [(time_at, val) for _, _, time_at, val in cursor.fetchall()]
+    return series_dict
+
+
 class SensorClassifier:
 
     def __init__(self):
-        self.conn = c.connect(user='root', password='ictwsn', host='10.22.0.77', database='curiosity_20161226')
-        self.label_dict = {}
-        self.feature_dict = {}
         self.model = None
         self.index2name = {}
         self.name2index = {}
         self.start_timestamp = dt.datetime.strptime("2016-12-04 00:00:00", "%Y-%m-%d %H:%M:%S").timestamp()
 
-    def train_model_with_all(self):
-        label_df = pd.read_sql("select * from manual_label_t where label!=''", self.conn)
-        self.label_dict = {(val['feed_id'], val['stream_id']): val['label'] for _, val in label_df.iterrows()}
-        raw_series_dict = self.fetch_raw_datapoints(self.label_dict)
+    def train_model(self, label_dict, raw_series_dict):
 
         print("Compute features for each datastream...")
-        self.feature_dict = self.compute_feature(raw_series_dict)
+        feature_dict = self.compute_feature(raw_series_dict)
         print("Features created! Start modeling...")
 
-        all_tuple = [fs_tuple for fs_tuple, v in self.feature_dict.items()]
-        all_feature = [self.feature_dict[fs_tuple] for fs_tuple in all_tuple]
-        all_label = [self.label_dict[fs_tuple] for fs_tuple in all_tuple]
+        all_tuple = [fs_tuple for fs_tuple, v in feature_dict.items()]
+        all_feature = [feature_dict[fs_tuple] for fs_tuple in all_tuple]
+        all_label = [label_dict[fs_tuple] for fs_tuple in all_tuple]
 
         self.model = RandomForestClassifier(n_estimators=100)
         self.model.fit(all_feature, all_label)
@@ -48,25 +56,6 @@ class SensorClassifier:
         predict_labels = [self.index2name[idx] for idx in sensor_choice]
         return predict_labels
 
-    def fetch_raw_datapoints(self, tuple_list):
-        """
-        在使用该方法进行逐一查找之前，必须对表datapoint_t的feedid和datastreamid增加索引
-        从manual_label_t表获得feed_id和stream_id，对应手工标记label；
-        原始的序列数据需要通过feed_id和stream_id从datapoint_t中进行查找
-        """
-        series_dict = dict()  # 每个(feedid, datastreamid)对应一个(time_at, val)的list
-        cursor = self.conn.cursor()
-
-        for f_id, s_id in tuple_list:
-            # print('Fetching feedid = ' + str(f_id) + ', datastreamid = ' + str(s_id))
-            cursor.execute("""
-                select feedid, datastreamid, time_at, val from datapoint_t
-                where feedid=%s and datastreamid=%s
-            """, (f_id, s_id))
-            series_dict[(f_id, s_id)] = [(time_at, val) for _, _, time_at, val in cursor.fetchall()]
-
-        return series_dict
-
     @staticmethod
     def magic(x, threshold=200):
         return x / abs(x) * (threshold + math.log(abs(x - threshold + 1))) if abs(x) > threshold else x
@@ -77,8 +66,6 @@ class SensorClassifier:
             feature = self.compute_feature_single(series)
             if feature is not None:
                 f_dict[fd_tuple] = feature
-            else:
-                print('Sampling error, ignore sensor: ' + str(fd_tuple))
         return f_dict
 
     def compute_feature_single(self, series):
@@ -107,6 +94,7 @@ class SensorClassifier:
                 v = interp_f(cur_time)  # 每十分钟进行一次采样
                 samples.append(self.magic(v))
         except ValueError:
+            print("Too few points...")
             return None
 
         # 常规参数
@@ -144,6 +132,7 @@ class SensorClassifier:
                 is_invalid = True
                 break
         if is_invalid:
+            print("Invalid value ...")
             return None
         return feature
 
