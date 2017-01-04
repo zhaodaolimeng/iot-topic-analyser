@@ -45,5 +45,11 @@ create table datastream_t(
     updated datetime,
     label varchar(255)
 );
+create table datapoint_t(
+    feedid bigint(20),
+    streamid varchar(255),
+    time_at datetime,
+    value varchar(255)
+);
 ```
 

@@ -11,8 +11,8 @@
     );
 """
 import mysql.connector as c
-import langid
 from utils.OpenstreetApi import location_type
+from utils.DMRHelper import is_english
 
 
 def trim_concat(s_arr):
@@ -29,18 +29,18 @@ def gather_text(doc_dict, conn):
             print(cnt)
         if f_id in doc_dict:
             doc = doc_dict[f_id] + '. ' + streamid + '. ' + streamtags
-            iana, _ = langid.classify(doc)
-            if iana == 'en':
+            if is_english(doc):
                 cursor.execute("""
-                    insert into features_t (feedid, streamid, doc, iana)
-                    values (%s, %s, %s, %s)
-                """, (f_id, streamid, doc, iana))
+                    insert into features_t (feedid, streamid, doc)
+                    values (%s, %s, %s)
+                """, (f_id, streamid, doc))
                 conn.commit()
 
 
 def gather_features(geo_dict, conn):
     print("update location_type ... ")
-    for f_id, lat, lng, created_time in geo_dict.items():
+    for f_id, value in geo_dict.items():
+        lat, lng, created_time = value
         ltype = location_type(lat, lng)
         cursor.execute("""
             update features_t set
@@ -49,22 +49,6 @@ def gather_features(geo_dict, conn):
         """, (ltype, created_time, f_id))
         conn.commit()
 
-
-def update_backup_location_type(conn):
-    print("update location_type ... ")
-
-    cursor.execute("""
-        select feedid, location_type from bak_features_t
-        where location_type = 'UNKNOWN' or location_type = 'yes'
-    """)
-    for f_id, lat, lng, created_time in cursor.fetchall():
-        ltype = location_type(lat, lng)
-        cursor.execute("""
-            update features_t set
-                location_type = %s, created = %s
-            where feedid = %s
-        """, (ltype, created_time, f_id))
-        conn.commit()
 
 if __name__ == "__main__":
 
@@ -81,5 +65,5 @@ if __name__ == "__main__":
         d_dict[feed_id] = trim_concat([description, device_name, title, tags])
         g_dict[feed_id] = (lat, lng, created_time)
 
-    gather_text(d_dict, db_conn)
-    # gather_features(g_dict, db_conn)
+    # gather_text(d_dict, db_conn)
+    gather_features(g_dict, db_conn)

@@ -45,7 +45,7 @@ def lookup_place_type(osm_id, o_type):
 
 
 def location_type(lat, lng):
-    delay = 1
+    delay = 0.5
     min_delay = delay
     while True:
         try:
