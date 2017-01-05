@@ -65,5 +65,5 @@ if __name__ == "__main__":
         d_dict[feed_id] = trim_concat([description, device_name, title, tags])
         g_dict[feed_id] = (lat, lng, created_time)
 
-    # gather_text(d_dict, db_conn)
-    gather_features(g_dict, db_conn)
+    gather_text(d_dict, db_conn)
+    # gather_features(g_dict, db_conn)

@@ -67,8 +67,8 @@ if __name__ == '__main__':
 
         # 测试dmr+补全的效果
         print("Compute the rate for complement values...")
-        f_list, regular_set = fetch_and_save_feature_enhanced(
-            w_dir + file_text, w_dir + file_features, conn, feature_subset_dict)
+        f_list, regular_set = fetch_and_save_feature(
+            w_dir + file_text, w_dir + file_features, conn, extends_dict=feature_subset_dict, selector=None)
         bm25 = BM25(file_text, work_dir=w_dir)
         dmr = DMR(file_text, file_features, topic_num=20, work_dir=w_dir)
         cursor = conn.cursor()
@@ -94,7 +94,8 @@ if __name__ == '__main__':
 
         # dmr + 未补全的效果
         print("Compute the rate for uncomplement values...")
-        f_list, regular_set = fetch_and_save_feature(w_dir + file_text, w_dir + file_features, conn)
+        f_list, regular_set = fetch_and_save_feature(
+            w_dir + file_text, w_dir + file_features, conn,extends_dict=None, selector=None)
         bm25 = BM25(file_text, work_dir=w_dir)
         dmr = DMR(file_text, file_features, topic_num=20, work_dir=w_dir)
         cursor = conn.cursor()
