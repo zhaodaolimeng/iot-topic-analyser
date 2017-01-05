@@ -48,7 +48,7 @@ def fetch_and_save_feature(desc_file, feature_file, connection, extends_dict, se
 
         # 生成文当前对doc进行补全
         if extends_dict is not None and (feed_id, streamid) in extends_dict:
-            doc = doc + extends_dict[(feed_id, streamid)]
+            doc = doc + '. ' + extends_dict[(feed_id, streamid)]
 
         # 时间
         time_from = time.mktime(create_time.timetuple()) - epoch
@@ -87,6 +87,8 @@ def fetch_and_save_feature(desc_file, feature_file, connection, extends_dict, se
                             ff.write("f_loc=" + str(l_type) + "\n")
                         elif selector == 3:
                             ff.write("f_loc=" + str(l_type) + " f_time=" + lb_time + "\n")
+                    else:
+                        ff.write("f_loc=" + str(l_type) + " f_time=" + lb_time + "\n")
 
     regular_set = set([w for w, c in regular_word.items() if c > 2])
     return feed_id_list, regular_set
