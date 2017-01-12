@@ -55,8 +55,8 @@ if __name__ == '__main__':
 
         # 生成索引
         print("fetch files ...")
-        fid_list, regular_set = fetch_and_save_feature_enhanced(
-            w_dir + file_text, w_dir + file_features, conn, extends_dict)
+        fid_list, regular_set = fetch_and_save_feature(
+            w_dir + file_text, w_dir + file_features, conn, extends_dict, selector=3)
         print("build index ...")
         dmr = DMR(file_text, file_features, topic_num=20, work_dir=w_dir)
         bm25 = BM25(file_text, work_dir=w_dir)

@@ -1,11 +1,16 @@
 """
 在不同补全率下，验证查询结果
+使用描述标签补充已有描述会对结果产生负面影响：
+(1)标签本身可能是错误的
+(2)标签可能“词不达意”，与查询词语有较大的出入
+尽管如此，这种描述生成对于无标签设备的意义是重大的
 """
 
 import os
 import random
 import pickle
 import mysql.connector as c
+import numpy as np
 import pandas as pd
 
 from classify.SensorClassifier import SensorClassifier, fetch_raw_datapoints
@@ -54,31 +59,33 @@ if __name__ == '__main__':
         pickle.dump(extends_dict, open(cached_feature_result, 'wb'))
 
     # 使用不同的补全率extends_rate，测试时只使用extends_dict中对应的tuple
+    # 对已有描述的数据集进行补全会降低准确度
+    # 实验除此之外，一定要能体现补全的好处（可检索到没有描述的设备）
     result_complement = []
     result_uncomplement = []
-    for test_cnt in list(range(3)):
+    for rate in np.arange(0.2, 1.2, 0.2):
         feature_subset_dict = {}
-        tmp_query_list = []
-        cnt = 0
+        subset_extend_list = []
         for fs_tuple, label in extends_dict.items():
             feature_subset_dict[fs_tuple] = label
-            tmp_query_list.append(fs_tuple[0])
-        print("times=" + str(test_cnt))
+            subset_extend_list.append(fs_tuple[0])
+        print("rate=" + str(rate))
+        subset_extend_list = subset_extend_list[ : int(rate*len(subset_extend_list))]
 
         # 测试dmr+补全的效果
         print("Compute the rate for complement values...")
         f_list, regular_set = fetch_and_save_feature(
-            w_dir + file_text, w_dir + file_features, conn, extends_dict=feature_subset_dict, selector=None)
+            w_dir + file_text, w_dir + file_features, conn, extends_dict=subset_extend_list, selector=None)
         bm25 = BM25(file_text, work_dir=w_dir)
         dmr = DMR(file_text, file_features, topic_num=20, work_dir=w_dir)
         cursor = conn.cursor()
         cursor.execute("select id, tags from feed_t where tags is not null")
         d_result = []
         f_set = set(f_list)
-        tmp_query_set = set(tmp_query_list)
+        query_set = set(extends_dict)
         cnt = 0
         for fid, tags in cursor.fetchall():
-            if fid not in f_set or fid not in tmp_query_set:
+            if fid not in f_set or fid not in query_set:
                 continue
             query_list = [w for w in trim_str(tags, stoplist) if w in regular_set]
             if len(query_list) == 0:
@@ -102,7 +109,7 @@ if __name__ == '__main__':
         cursor.execute("select id, tags from feed_t where tags is not null")
         d_result = []
         f_set = set(f_list)
-        tmp_query_set = set(tmp_query_list)
+        tmp_query_set = set(subset_extend_list)
         cnt = 0
         for fid, tags in cursor.fetchall():
             if fid not in f_set or fid not in tmp_query_set:

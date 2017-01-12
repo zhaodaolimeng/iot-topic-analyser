@@ -42,7 +42,7 @@ def fetch_and_save_feature(desc_file, feature_file, connection, extends_dict, se
         stoplist = set(f.read().split())
 
     result_dict = {}
-    epoch = 0
+    epoch = 0  # FIXME 输出的时间顺序不对
     regular_word = collections.defaultdict(int)
     for feed_id, streamid, doc, l_type, create_time in cursor.fetchall():
 
