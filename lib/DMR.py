@@ -23,7 +23,7 @@ class DMR(object):
         """
         self.working_directory = work_dir
         self.word_dict = dict()
-        self.vd_list = []  # 读入的每个文档的主题分布
+        self.vd_list = []  # 每个文档的主题分布
 
         mallet_instance = 'mallet.instance'
         output_runtime = 'runtime.txt'
@@ -74,10 +74,30 @@ class DMR(object):
         for idx, row in df.iterrows():
             if row['type'] not in self.word_dict:
                 self.word_dict[row['type']] = [1] * topic_num
-            self.word_dict[row['type']][row['topic']] += 1
+            self.word_dict[row['type']][row['topic']] += 1  # type指词的string，topic指词的主题
             if idx % 10000 == 0:
                 print(idx)
         print('Topic vector compute done!')
+
+    def get_word_topic(self, word):
+        """
+        获取指定词的主题信息
+        :param word: 词的string
+        :return: 词的主题向量
+        """
+        if word in self.word_dict:
+            return np.array(self.word_dict[word])
+        return None
+
+    def get_doc_topic(self, doc_id):
+        """
+        指文档的主题向量
+        :param doc_id:
+        :return:
+        """
+        if doc_id >= len(self.vd_list) or doc_id < 0:
+            return None
+        return np.array(self.vd_list[doc_id])
 
     def dmr_score(self, query_list, alpha=0.0000001):
         """

@@ -23,7 +23,7 @@ def trim_str(s, stopwords):
     return wordlist
 
 
-def fetch_and_save_feature(desc_file, feature_file, connection, extends_dict, selector):
+def fetch_and_save_feature(desc_file, feature_file, connection, extends_dict, selector, id_file):
     """
     从数据库features_t中读取特征和文本并形成文件
     :param desc_file:
@@ -41,8 +41,8 @@ def fetch_and_save_feature(desc_file, feature_file, connection, extends_dict, se
     with codecs.open(settings.DEFINITIONS_ROOT + '/resource/stopwords.txt', 'r') as f:
         stoplist = set(f.read().split())
 
+    epoch = int(time.mktime(time.strptime('2008.01.01', '%Y.%m.%d')))
     result_dict = {}
-    epoch = 0  # FIXME 输出的时间顺序不对
     regular_word = collections.defaultdict(int)
     for feed_id, streamid, doc, l_type, create_time in cursor.fetchall():
 
@@ -51,15 +51,13 @@ def fetch_and_save_feature(desc_file, feature_file, connection, extends_dict, se
             doc = doc + '. ' + extends_dict[(feed_id, streamid)]
 
         # 时间
-        time_from = time.mktime(create_time.timetuple()) - epoch
-        if epoch == 0:
-            epoch = time_from
-            time_from = 0
-        lb_time = str(int(time_from / (3600 * 24 * 30 * 6)))
+        time_from = time.mktime(create_time.timetuple())
+        lb_time = str(int((time_from - epoch) / (3600 * 24 * 30 * 6)))
 
         # 地点
         if l_type not in type_dict:
             type_dict[l_type] = next_type
+            print('l_type=' + l_type + '\ttype_id=' + str(next_type))
             next_type += 1
 
         # 词
@@ -84,11 +82,11 @@ def fetch_and_save_feature(desc_file, feature_file, connection, extends_dict, se
                         elif selector == 1:
                             ff.write("f_time=" + lb_time + "\n")
                         elif selector == 2:
-                            ff.write("f_loc=" + str(l_type) + "\n")
+                            ff.write("f_loc_" + str(l_type) + "\n")
                         elif selector == 3:
-                            ff.write("f_loc=" + str(l_type) + " f_time=" + lb_time + "\n")
+                            ff.write("f_loc_" + str(l_type) + " f_time=" + lb_time + "\n")
                     else:
-                        ff.write("f_loc=" + str(l_type) + " f_time=" + lb_time + "\n")
+                        ff.write("f_loc_" + str(l_type) + " f_time=" + lb_time + "\n")
 
-    regular_set = set([w for w, c in regular_word.items() if c > 2])
+    regular_set = set([w for w, c in regular_word.items() if c > 2])  # word set
     return feed_id_list, regular_set
