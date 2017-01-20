@@ -23,7 +23,7 @@ def trim_str(s, stopwords):
     return wordlist
 
 
-def fetch_and_save_feature(desc_file, feature_file, connection, extends_dict, selector, id_file):
+def fetch_and_save_feature(desc_file, feature_file, connection, extends_dict, selector):
     """
     从数据库features_t中读取特征和文本并形成文件
     :param desc_file:
