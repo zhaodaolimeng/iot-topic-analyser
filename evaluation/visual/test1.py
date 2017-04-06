@@ -22,7 +22,6 @@ from lib.BM25 import BM25
 from lib.DMR import DMR
 from utils.DMRHelper import *
 
-
 if __name__ == '__main__':
 
     # 重新训练

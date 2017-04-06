@@ -49,7 +49,8 @@ if __name__ == '__main__':
         extends_dict = {fs_tuple: sc.pred(feature)[0] for fs_tuple, feature in feature_dict.items()}
         pickle.dump(extends_dict, open(cached_feature_result, 'wb'))
 
-    result_complement = []
+    d_result_complement = []
+    b_result_complement = []
     for label_completeness in np.arange(0.2, 1.2, 0.2):
         print('For rate = ' + str(label_completeness))
         # 从extends_dict中随机选取一部分数据，其他的标签均使用unknown表示
@@ -75,6 +76,7 @@ if __name__ == '__main__':
         cursor = conn.cursor()
         cursor.execute("select id, tags from feed_t where tags is not null")
         d_result = []
+        b_result = []
         f_set = set(f_list)
         cnt = 0
         for fid, tags in cursor.fetchall():
@@ -87,11 +89,15 @@ if __name__ == '__main__':
             if cnt % 10 != 0:
                 continue
             dscore = dmr.optimized_score(query_list, bm25)
+            bscore = bm25.bm25_score(query_list)
             # 检查fid在rank的位置
             print(fid)
             f_idx = f_list.index(fid)
             d_rank = len([score for score in dscore if score > dscore[f_idx]])
+            b_rank = len([score for score in bscore if score > bscore[f_idx]])
             d_result.append(d_rank)
-        result_complement.append(d_result)
+            b_result.append(b_rank)
+        d_result_complement.append(d_result)
+        b_result_complement.append(b_result)
 
-    pickle.dump(result_complement, open(final_result, 'wb'))
+    pickle.dump((d_result_complement, b_result_complement), open(final_result, 'wb'))
