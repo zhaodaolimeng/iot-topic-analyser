@@ -59,7 +59,7 @@ def compute_feature(series_dict):
         # 对数据进行插值
         tlist = [(series[i][0].timestamp() - START_TIMESTAMP)/60 for i in range(len(series))]
         vlist = [series[i][1] for i in range(len(series))]
-        tlist = [0] + tlist + [len_of_2days]
+        tlist = [0.0] + tlist + [len_of_2days]
         vlist = [vlist[0]] + vlist + [vlist[-1]]
 
         # print(fd_tuple)
@@ -103,7 +103,6 @@ def compute_feature(series_dict):
 
         # 以最大值作为分裂两部分数据的依据
         # 分别计算两部分数据的最小值，作为单日数据截断的依据
-        # TODO 如何认定是以天为周期的？
         # maxv_idx = np.argmax(sample_np)
         # minv_idx = np.argmax(-sample_np)
         # feature.append()
@@ -129,7 +128,7 @@ if __name__ == "__main__":
     PICKLE_LOADED_FROM_DB = 'p_raw_series_dict.pickle'
     PICKLE_FEATURES = 'p_label_feature.pickle'
 
-    db_conn = c.connect(user='root', password='ictwsn', host='10.22.0.77', database='curiosity_20161204')
+    db_conn = c.connect(user='root', password='ictwsn', host='10.22.0.77', database='curiosity_thingspeak')
     print('Fetch labeled streams ...')
     label_df = pd.read_sql("select * from manual_label_t where label!=''", db_conn)
     label_dict = {(val['feed_id'], val['stream_id']): val['label'] for _, val in label_df.iterrows()}
